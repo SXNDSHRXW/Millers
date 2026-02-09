@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    
+    <title>Work & Credits | MILLERS</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        midnight: { 900: '#0B0F1F', 800: '#111827', 700: '#1E293B', 600: '#1e3a8a' },
+                        silver: { 100: '#f1f5f9', 200: '#e2e8f0', 300: '#cbd5e1', 400: '#94a3b8', 500: '#64748b' }
+                    },
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                        display: ['Space Grotesk', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body { 
+            background-color: #0B0F1F; 
+            color: #e2e8f0;
+            font-family: 'Outfit', sans-serif;
+        }
+        .font-display { font-family: 'Space Grotesk', sans-serif; }
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.4);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(148, 163, 184, 0.1);
+        }
+        .silver-gradient {
+            background: linear-gradient(135deg, #e2e8f0 0%, #94a3b8 50%, #cbd5e1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* Custom Audio Player Styles */
+        .audio-player {
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.6), rgba(17, 24, 39, 0.8));
+            border: 1px solid rgba(148, 163, 184, 0.15);
+        }
+        .audio-player:hover {
+            border-color: rgba(34, 197, 94, 0.4);
+        }
+        .play-btn {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3);
+        }
+        .play-btn:hover {
+            box-shadow: 0 6px 20px rgba(34, 197, 94, 0.5);
+            transform: scale(1.05);
+        }
+        .progress-bar {
+            background: rgba(148, 163, 184, 0.2);
+        }
+        .progress-fill {
+            background: linear-gradient(90deg, #22c55e, #4ade80);
+        }
+        .waveform-bar {
+            background: linear-gradient(to top, #22c55e, #4ade80);
+            animation: wave 1.2s ease-in-out infinite;
+        }
+        .waveform-bar:nth-child(2) { animation-delay: 0.1s; }
+        .waveform-bar:nth-child(3) { animation-delay: 0.2s; }
+        .waveform-bar:nth-child(4) { animation-delay: 0.3s; }
+        .waveform-bar:nth-child(5) { animation-delay: 0.15s; }
+        @keyframes wave {
+            0%, 100% { height: 20%; }
+            50% { height: 100%; }
+        }
+        .playing .waveform-bar {
+            animation-play-state: running;
+        }
+        .paused .waveform-bar {
+            animation-play-state: paused;
+        }
+        
+        /* Credit Card Styles */
+        .credit-card {
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.5), rgba(17, 24, 39, 0.7));
+            border-left: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+        .credit-card:hover {
+            border-left-color: #22c55e;
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.7), rgba(17, 24, 39, 0.9));
+            transform: translateX(8px);
+        }
+        
+        /* Tab Styles */
+        .tab-btn {
+            transition: all 0.3s ease;
+        }
+        .tab-btn.active {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: white;
+        }
+        .tab-btn:not(.active):hover {
+            background: rgba(148, 163, 184, 0.1);
+        }
+        
+        /* Scroll Animation */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="antialiased overflow-x-hidden">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 glass-panel border-b border-silver-500/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <a href="index.html" class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-br from-silver-300 to-silver-500 flex items-center justify-center text-midnight-900 font-bold text-xl">M</div>
+                    <span class="font-display font-bold text-2xl silver-gradient tracking-wider">MILLERS</span>
+                </a>
+                <div class="hidden md:flex space-x-8">
+                    <a href="index.html#home" class="text-silver-300 hover:text-white transition-colors text-sm uppercase tracking-wider">Home</a>
+                    <a href="index.html#services" class="text-silver-300 hover:text-white transition-colors text-sm uppercase tracking-wider">Services</a>
+                    <a href="work.html" class="text-green-400 hover:text-green-300 transition-colors text-sm uppercase tracking-wider font-semibold">Work & Credits</a>
+                    <a href="beatstore.html" class="text-silver-300 hover:text-white transition-colors text-sm uppercase tracking-wider">Beatstore</a>
+                    <a href="index.html#upload" class="text-silver-300 hover:text-white transition-colors text-sm uppercase tracking-wider">Upload Stems</a>
+                    <a href="index.html#contact" class="text-silver-300 hover:text-white transition-colors text-sm uppercase tracking-wider">Contact</a>
+                </div>
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="md:hidden text-silver-300 hover:text-white">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+            </div>
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="hidden md:hidden pb-4">
+                <a href="index.html#home" class="block py-2 text-silver-300 hover:text-white text-sm uppercase tracking-wider">Home</a>
+                <a href="index.html#services" class="block py-2 text-silver-300 hover:text-white text-sm uppercase tracking-wider">Services</a>
+                <a href="work.html" class="block py-2 text-green-400 text-sm uppercase tracking-wider font-semibold">Work & Credits</a>
+                <a href="beatstore.html" class="block py-2 text-silver-300 hover:text-white text-sm uppercase tracking-wider">Beatstore</a>
+                <a href="index.html#upload" class="block py-2 text-silver-300 hover:text-white text-sm uppercase tracking-wider">Upload Stems</a>
+                <a href="index.html#contact" class="block py-2 text-silver-300 hover:text-white text-sm uppercase tracking-wider">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-[60vh] flex items-center justify-center pt-20 overflow-hidden">
+        <div class="absolute inset-0 z-0 pointer-events-none">
+            <div class="absolute top-20 right-10 w-96 h-96 bg-green-600/10 rounded-full blur-[120px]"></div>
+            <div class="absolute bottom-20 left-10 w-72 h-72 bg-blue-600/10 rounded-full blur-[100px]"></div>
+        </div>
+        
+        <div class="relative z-10 max-w-7xl mx-auto px-4 text-center">
+            <div class="inline-flex items-center gap-2 px-4 py-2 bg-green-600/20 rounded-full text-green-400 text-sm font-semibold mb-6 fade-in">
+                <span>Portfolio</span>
+            </div>
+            <h1 class="font-display font-bold text-5xl md:text-7xl lg:text-8xl mb-6 leading-none tracking-tighter fade-in" style="transition-delay: 0.1s">
+                <span class="silver-gradient">Work & Credits</span>
+            </h1>
+            <p class="text-silver-400 text-lg md:text-xl max-w-2xl mx-auto mb-8 font-light fade-in" style="transition-delay: 0.2s">
+                A selection of tracks I've mixed, mastered, and produced. Listen to the sound quality that defines my work.
+            </p>
+            
+            <!-- Category Tabs -->
+            <div class="flex flex-wrap justify-center gap-3 fade-in" style="transition-delay: 0.3s">
+                <button class="tab-btn active px-6 py-3 rounded-full text-sm font-semibold uppercase tracking-wider" data-tab="all">All Work</button>
+                <button class="tab-btn px-6 py-3 rounded-full text-silver-300 text-sm font-semibold uppercase tracking-wider border border-silver-500/20" data-tab="mixing">Mixing</button>
+                <button class="tab-btn px-6 py-3 rounded-full text-silver-300 text-sm font-semibold uppercase tracking-wider border border-silver-500/20" data-tab="mastering">Mastering</button>
+                <button class="tab-btn px-6 py-3 rounded-full text-silver-300 text-sm font-semibold uppercase tracking-wider border border-silver-500/20" data-tab="production">Production</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Audio Work Section -->
+    <section class="py-16 px-4">
+        <div class="max-w-5xl mx-auto">
+            <div class="flex items-center gap-4 mb-12 fade-in">
+                <div class="w-12 h-12 rounded-full bg-green-600/20 flex items-center justify-center text-green-400">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/>
+                    </svg>
+                </div>
+                <div>
+                    <h2 class="font-display text-3xl font-bold text-white">Featured Tracks</h2>
+                    <p class="text-silver-400 text-sm">Click play to preview</p>
+                </div>
+            </div>
+
+            <!-- Audio Players Grid -->
+            <div class="space-y-4" id="audio-grid">
+                <!-- Track 1 -->
+                <div class="audio-player rounded-2xl p-6 fade-in work-item" data-category="mixing mastering" data-audio="track1">
+                    <div class="flex flex-col md:flex-row md:items-center gap-6">
+                        <!-- Album Art / Visualizer -->
+                        <div class="w-20 h-20 rounded-xl bg-gradient-to-br from-purple-600 to-blue-600 flex items-center justify-center flex-shrink-0">
+                            <div class="waveform-visualizer flex items-end gap-1 h-10 paused" id="viz-track1">
+                                <div class="waveform-bar w-1 rounded-full"></div>
+                                <div class="waveform-bar w-1 rounded-full"></div>
+                                <div class="waveform-bar w-1 rounded-full"></div>
+                                <div class="waveform-bar w-1 rounded-full"></div>
+                                <div class="waveform-bar w-1 rounded-full"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Track Info -->
+                        <div class="flex-1 min-w-0">
+                            <h3 class="font-display text-xl font-bold text-white truncate">Midnight Dreams</h3>
+                            <p class="text-silver-400 text-sm">Artist: Luna Rose • Mixing & Mastering</p>
+                            <div class="flex gap-2 mt-2">
+                                <span class="px-2 py-1 bg-green-600/20 rounded text-green-400 text-xs">Mixing</span>
+                                <span class="px-2 py-1 bg-blue-600/20 rounded text-blue-400 text-xs">Mastering</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Controls -->
+                        <div class="flex items-center gap-4">
+                            <button class="play-btn w-14 h-14 rounded-full flex items-center justify-center text-white transition-all" onclick="togglePlay('track1', 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3')">
+                                <svg class="w-6 h-6 play-icon" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M8 5v14l11-7z"/>
+                                </svg>
+                                <svg class="w-6 h-6 pause-icon hidden" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                                </svg>
+                            </button>
+                            <div class="text-silver-400 text-sm font-mono" id="time-track1">0:00 / 0:00</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Progress Bar -->
+                    <div class="mt-4">
+                        <div class="progress-bar h-2 rounded-full cursor-pointer" onclick="seek(event, 'track1')">
+                            <div class="progress-fill h-full rounded-full transition-all duration-100" id="progress-track1" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Track 2 -->
+                <div class="audio-player rounded-2xl p-6 fade-in work-item" data-category="production" data-audio="track2">
+                    <div class="flex flex-col md:flex-row md:items-center gap-6">
+                        <div class="w-20 h-20 rounded-xl bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center flex-shrink-0">
+                            <div class="waveform-visualizer flex items-end gap-1 h-10 paused" id="viz-track2">
+                                <div class="waveform-bar w-1 rounded-full"></div>
+                                <div class="waveform-bar w-1 rounded-full"></div>
+                                <div class="waveform-bar w-1 rounded-full"></div>
+                                <div class="waveform-bar w-1 rounded-full"></div>
+                                <div class="waveform-bar w-1 rounded-full"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex-1 min-w-0">
+                            <h3 class="font-display text-xl font-bold text-white truncate">Electric Soul</h3>
+                            <p class="text-silver-400 text-sm">Artist: The Voltage • Full Production</p>
+                            <div class="flex gap-2 mt-2">
+                                <span class="px-2 py-1 bg-purple-600/20 rounded text-purple-400 text-xs">Production</span>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center gap-4">
+                            <button class="play-btn w-14 h-14 rounded-full flex items-center justify-center text-white transition-all" onclick="togglePlay('track2', 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3')">
+                                <svg class="w-6 h-6 play-icon" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M8 5v14l11-7z"/>
+                                </svg>
+                                <svg class="w-6 h-6 pause-icon hidden" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                                </svg>
+                            </button>
+                            <div class="text-silver-400 text-sm font-mono" id="time-track2">0:00 / 0:00</div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4">
+                        <div class="progress-bar h-2 rounded-full cursor-pointer" onclick="seek(event, 'track2')">
+                            <div class="progress-fill h-full rounded-full transition-all duration-100" id="progress-track2" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Track 3 -->
+                <div class="audio-player rounded-2xl p-6 fade-in work-item" data-category="mastering" data-audio="track3">
+                    <div class="flex flex-col md:flex-row md:items-center gap-6">
+                        <div class="w-20 h-20 rounded-xl bg-gradient-to-br from-cyan-500 to-teal-600 flex items-center justify-center flex-shrink-0">
+                            <div class="waveform-visualizer flex items-end gap-1 h-10 paused" id="viz-track3">
+                                <div class="waveform-bar w-1 rounded-full"></div>
+                                <div class="waveform-bar w-1 rounded-full"></div>
+                                <div class="waveform-bar w-1 rounded-full"></div>
+                                <div class="waveform-bar w-1 rounded-full"></div>
+                                <div class="waveform-bar w-1 rounded-full"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex-1 min-w-0">
+                            <h3 class="font-display text-xl font-bold text-white truncate">Ocean Waves</h3>
+                            <p class="text-silver-400 text-sm">Artist: Coastal Vibes • Mastering Only</p>
+                            <div class="flex gap-2 mt-2">
+                                <span class="px-2 py-1 bg-blue-600/20 rounded text-blue-400 text-xs">Mastering</span>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center gap-4">
+                            <button class="play-btn w-14 h-14 rounded-full flex items-center justify-center text-white transition-all" onclick="togglePlay('track3', 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3')">
+                                <svg class="w-6 h-6 play-icon" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M8 5v14l11-7z"/>
+                                </svg>
+                                <svg class="w-6 h-6 pause-icon hidden" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                                </svg>
+                            </button>
+                            <div class="text-silver-400 text-sm font-mono" id="time-track3">0:00 / 0:00</div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4">
+                        <div class="progress-bar h-2 rounded-full cursor-pointer" onclick="seek(event, 'track3')">
+                            <div class="progress-fill h-full rounded-full transition-all duration-100" id="progress-track3" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Track 4 -->
+                <div class="audio-player rounded-2xl p-6 fade-in work-item" data-category="mixing" data-audio="track4">
+                    <div class="flex flex-col md:flex-row md:items-center gap-6">
+                        <div class="w-20 h-20 rounded-xl bg-gradient-to-br from-pink-500 to-rose-600 flex items-center justify-center flex-shrink-0">
+                            <div class="waveform-visualizer flex items-end gap-1 h-10 paused" id="viz-track4">
+                                <div class="waveform-bar w-1 rounded-full"></div>
+                                <div class="waveform-bar w-1 rounded-full"></div>
+                                <div class="waveform-bar w-1 rounded-full"></div>
+                                <div class="waveform-bar w-1 rounded-full"></div>
+                                <div class="waveform-bar w-1 rounded-full"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex-1 min-w-0">
+                            <h3 class="font-display text-xl font-bold text-white truncate">Neon Nights</h3>
+                            <p class="text-silver-400 text-sm">Artist: Synthwave Collective • Mixing</p>
+                            <div class="flex gap-2 mt-2">
+                                <span class="px-2 py-1 bg-green-600/20 rounded text-green-400 text-xs">Mixing</span>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center gap-4">
+                            <button class="play-btn w-14 h-14 rounded-full flex items-center justify-center text-white transition-all" onclick="togglePlay('track4', 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3')">
+                                <svg class="w-6 h-6 play-icon" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M8 5v14l11-7z"/>
+                                </svg>
+                                <svg class="w-6 h-6 pause-icon hidden" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                                </svg>
+                            </button>
+                            <div class="text-silver-400 text-sm font-mono" id="time-track4">0:00 / 0:00</div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4">
+                        <div class="progress-bar h-2 rounded-full cursor-pointer" onclick="seek(event, 'track4')">
+                            <div class="progress-fill h-full rounded-full transition-all duration-100" id="progress-track4" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Track 5 -->
+                <div class="audio-player rounded-2xl p-6 fade-in work-item" data-category="mixing mastering production" data-audio="track5">
+                    <div class="flex flex-col md:flex-row md:items-center gap-6">
+                        <div class="w-20 h-20 rounded-xl bg-gradient-to-br from-amber-500 to-yellow-600 flex items-center justify-center flex-shrink-0">
+                            <div class="waveform-visualizer flex items-end gap-1 h-10 paused" id="viz-track5">
+                                <div class="waveform-bar w-1 rounded-full"></div>
+                                <div class="waveform-bar w-1 rounded-full"></div>
+                                <div class="waveform-bar w-1 rounded-full"></div>
+                                <div class="waveform-bar w-1 rounded-full"></div>
+                                <div class="waveform-bar w-1 rounded-full"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex-1 min-w-0">
+                            <h3 class="font-display text-xl font-bold text-white truncate">Golden Hour</h3>
+                            <p class="text-silver-400 text-sm">Artist: Sunset Boulevard • Full Service</p>
+                            <div class="flex gap-2 mt-2">
+                                <span class="px-2 py-1 bg-green-600/20 rounded text-green-400 text-xs">Mixing</span>
+                                <span class="px-2 py-1 bg-blue-600/20 rounded text-blue-400 text-xs">Mastering</span>
+                                <span class="px-2 py-1 bg-purple-600/20 rounded text-purple-400 text-xs">Production</span>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center gap-4">
+                            <button class="play-btn w-14 h-14 rounded-full flex items-center justify-center text-white transition-all" onclick="togglePlay('track5', 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3')">
+                                <svg class="w-6 h-6 play-icon" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M8 5v14l11-7z"/>
+                                </svg>
+                                <svg class="w-6 h-6 pause-icon hidden" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                                </svg>
+                            </button>
+                            <div class="text-silver-400 text-sm font-mono" id="time-track5">0:00 / 0:00</div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4">
+                        <div class="progress-bar h-2 rounded-full cursor-pointer" onclick="seek(event, 'track5')">
+                            <div class="progress-fill h-full rounded-full transition-all duration-100" id="progress-track5" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Credits Section -->
+    <section class="py-16 px-4">
+        <div class="max-w-5xl mx-auto">
+            <div class="text-center mb-12 fade-in">
+                <div class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600/20 rounded-full text-blue-400 text-sm font-semibold mb-4">
+                    <span>Discography</span>
+                </div>
+                <h2 class="font-display text-4xl md:text-5xl font-bold silver-gradient mb-4">Credits</h2>
+                <p class="text-silver-400 max-w-2xl mx-auto">Artists and projects I've had the pleasure of working with</p>
+            </div>
+
+            <!-- Stats -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12 fade-in">
+                <div class="glass-panel rounded-2xl p-6 text-center">
+                    <div class="text-4xl font-bold text-green-400 mb-2">150+</div>
+                    <div class="text-silver-400 text-sm">Tracks Mixed</div>
+                </div>
+                <div class="glass-panel rounded-2xl p-6 text-center">
+                    <div class="text-4xl font-bold text-blue-400 mb-2">300+</div>
+                    <div class="text-silver-400 text-sm">Masters Delivered</div>
+                </div>
+                <div class="glass-panel rounded-2xl p-6 text-center">
+                    <div class="text-4xl font-bold text-purple-400 mb-2">50+</div>
+                    <div class="text-silver-400 text-sm">Artists</div>
+                </div>
+                <div class="glass-panel rounded-2xl p-6 text-center">
+                    <div class="text-4xl font-bold text-amber-400 mb-2">8</div>
+                    <div class="text-silver-400 text-sm">Years Experience</div>
+                </div>
+            </div>
+
+            <!-- Credits List -->
+            <div class="space-y-3" id="credits-list">
+                <div class="credit-card rounded-xl p-5 fade-in work-item" data-category="mixing mastering">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                        <div>
+                            <h3 class="font-display text-lg font-bold text-white">Luna Rose</h3>
+                            <p class="text-silver-400 text-sm">Album: "Midnight Dreams" (2024)</p>
+                        </div>
+                        <div class="flex gap-2">
+                            <span class="px-3 py-1 bg-green-600/20 rounded-full text-green-400 text-xs">Mixing</span>
+                            <span class="px-3 py-1 bg-blue-600/20 rounded-full text-blue-400 text-xs">Mastering</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="credit-card rounded-xl p-5 fade-in work-item" data-category="production">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                        <div>
+                            <h3 class="font-display text-lg font-bold text-white">The Voltage</h3>
+                            <p class="text-silver-400 text-sm">Single: "Electric Soul" (2024)</p>
+                        </div>
+                        <div class="flex gap-2">
+                            <span class="px-3 py-1 bg-purple-600/20 rounded-full text-purple-400 text-xs">Production</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="credit-card rounded-xl p-5 fade-in work-item" data-category="mastering">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                        <div>
+                            <h3 class="font-display text-lg font-bold text-white">Coastal Vibes</h3>
+                            <p class="text-silver-400 text-sm">EP: "Ocean Waves" (2023)</p>
+                        </div>
+                        <div class="flex gap-2">
+                            <span class="px-3 py-1 bg-blue-600/20 rounded-full text-blue-400 text-xs">Mastering</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="credit-card rounded-xl p-5 fade-in work-item" data-category="mixing">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                        <div>
+                            <h3 class="font-display text-lg font-bold text-white">Synthwave Collective</h3>
+                            <p class="text-silver-400 text-sm">Album: "Neon Nights" (2023)</p>
+                        </div>
+                        <div class="flex gap-2">
+                            <span class="px-3 py-1 bg-green-600/20 rounded-full text-green-400 text-xs">Mixing</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="credit-card rounded-xl p-5 fade-in work-item" data-category="mixing mastering production">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                        <div>
+                            <h3 class="font-display text-lg font-bold text-white">Sunset Boulevard</h3>
+                            <p class="text-silver-400 text-sm">Album: "Golden Hour" (2023)</p>
+                        </div>
+                        <div class="flex gap-2">
+                            <span class="px-3 py-1 bg-green-600/20 rounded-full text-green-400 text-xs">Mixing</span>
+                            <span class="px-3 py-1 bg-blue-600/20 rounded-full text-blue-400 text-xs">Mastering</span>
+                            <span class="px-3 py-1 bg-purple-600/20 rounded-full text-purple-400 text-xs">Production</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="credit-card rounded-xl p-5 fade-in work-item" data-category="mastering">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                        <div>
+                            <h3 class="font-display text-lg font-bold text-white">Urban Echo</h3>
+                            <p class="text-silver-400 text-sm">Single: "City Lights" (2022)</p>
+                        </div>
+                        <div class="flex gap-2">
+                            <span class="px-3 py-1 bg-blue-600/20 rounded-full text-blue-400 text-xs">Mastering</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="credit-card rounded-xl p-5 fade-in work-item" data-category="mixing">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                        <div>
+                            <h3 class="font-display text-lg font-bold text-white">The Wanderers</h3>
+                            <p class="text-silver-400 text-sm">EP: "Journey" (2022)</p>
+                        </div>
+                        <div class="flex gap-2">
+                            <span class="px-3 py-1 bg-green-600/20 rounded-full text-green-400 text-xs">Mixing</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20 px-4 bg-gradient-to-b from-blue-900/20 to-midnight-900">
+        <div class="max-w-3xl mx-auto text-center fade-in">
+            <h2 class="font-display text-4xl md:text-5xl font-bold silver-gradient mb-6">Ready to Work Together?</h2>
+            <p class="text-silver-400 text-lg mb-8">Let's create something amazing. Upload your stems and let's get started.</p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="index.html#upload" class="px-8 py-4 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-full font-semibold hover:shadow-lg transition-all transform hover:scale-105 flex items-center justify-center gap-2">
+                    <span>Upload Stems Now</span>
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                    </svg>
+                </a>
+                <a href="index.html#contact" class="px-8 py-4 border border-silver-400/30 text-silver-200 rounded-full font-semibold hover:bg-silver-400/10 transition-all">
+                    Get in Touch
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-silver-500/10 py-12 px-4 bg-midnight-900">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+            <a href="index.html" class="flex items-center space-x-3">
+                <div class="w-8 h-8 rounded-full bg-gradient-to-br from-silver-300 to-silver-500 flex items-center justify-center text-midnight-900 font-bold">M</div>
+                <span class="font-display font-bold text-xl silver-gradient tracking-wider">MILLERS</span>
+            </a>
+            
+            <div class="flex space-x-6 text-silver-400">
+                <a href="#" class="hover:text-white transition-colors">IG</a>
+                <a href="#" class="hover:text-white transition-colors">TW</a>
+                <a href="#" class="hover:text-white transition-colors">YT</a>
+                <a href="mailto:contact@millersaudio.com" class="hover:text-white transition-colors">Email</a>
+            </div>
+            
+            <p class="text-silver-500 text-sm">&copy; 2026 MILLERS. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Audio Player Logic
+        const audioPlayers = {};
+        let currentlyPlaying = null;
+
+        function formatTime(seconds) {
+            if (isNaN(seconds)) return '0:00';
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        function togglePlay(trackId, audioUrl) {
+            const btn = document.querySelector(`[data-audio="${trackId}"] .play-btn`);
+            const playIcon = btn.querySelector('.play-icon');
+            const pauseIcon = btn.querySelector('.pause-icon');
+            const viz = document.getElementById(`viz-${trackId}`);
+
+            // Stop currently playing track
+            if (currentlyPlaying && currentlyPlaying !== trackId) {
+                const prevBtn = document.querySelector(`[data-audio="${currentlyPlaying}"] .play-btn`);
+                const prevPlayIcon = prevBtn.querySelector('.play-icon');
+                const prevPauseIcon = prevBtn.querySelector('.pause-icon');
+                const prevViz = document.getElementById(`viz-${currentlyPlaying}`);
+                
+                audioPlayers[currentlyPlaying].pause();
+                prevPlayIcon.classList.remove('hidden');
+                prevPauseIcon.classList.add('hidden');
+                prevViz.classList.remove('playing');
+                prevViz.classList.add('paused');
+            }
+
+            // Initialize audio if not exists
+            if (!audioPlayers[trackId]) {
+                audioPlayers[trackId] = new Audio(audioUrl);
+                audioPlayers[trackId].addEventListener('timeupdate', () => updateProgress(trackId));
+                audioPlayers[trackId].addEventListener('loadedmetadata', () => updateTime(trackId));
+                audioPlayers[trackId].addEventListener('ended', () => {
+                    playIcon.classList.remove('hidden');
+                    pauseIcon.classList.add('hidden');
+                    viz.classList.remove('playing');
+                    viz.classList.add('paused');
+                    document.getElementById(`progress-${trackId}`).style.width = '0%';
+                    currentlyPlaying = null;
+                });
+            }
+
+            const audio = audioPlayers[trackId];
+
+            if (audio.paused) {
+                audio.play();
+                playIcon.classList.add('hidden');
+                pauseIcon.classList.remove('hidden');
+                viz.classList.add('playing');
+                viz.classList.remove('paused');
+                currentlyPlaying = trackId;
+            } else {
+                audio.pause();
+                playIcon.classList.remove('hidden');
+                pauseIcon.classList.add('hidden');
+                viz.classList.remove('playing');
+                viz.classList.add('paused');
+                currentlyPlaying = null;
+            }
+        }
+
+        function updateProgress(trackId) {
+            const audio = audioPlayers[trackId];
+            const progress = (audio.currentTime / audio.duration) * 100;
+            document.getElementById(`progress-${trackId}`).style.width = `${progress}%`;
+            updateTime(trackId);
+        }
+
+        function updateTime(trackId) {
+            const audio = audioPlayers[trackId];
+            const timeEl = document.getElementById(`time-${trackId}`);
+            timeEl.textContent = `${formatTime(audio.currentTime)} / ${formatTime(audio.duration)}`;
+        }
+
+        function seek(event, trackId) {
+            const audio = audioPlayers[trackId];
+            if (!audio || !audio.duration) return;
+            
+            const rect = event.currentTarget.getBoundingClientRect();
+            const clickX = event.clientX - rect.left;
+            const percentage = clickX / rect.width;
+            audio.currentTime = percentage * audio.duration;
+        }
+
+        // Tab Filtering
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const workItems = document.querySelectorAll('.work-item');
+
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Update active tab
+                tabBtns.forEach(b => {
+                    b.classList.remove('active');
+                    b.classList.add('text-silver-300', 'border', 'border-silver-500/20');
+                });
+                btn.classList.add('active');
+                btn.classList.remove('text-silver-300', 'border', 'border-silver-500/20');
+
+                const category = btn.dataset.tab;
+
+                // Filter items
+                workItems.forEach(item => {
+                    if (category === 'all' || item.dataset.category.includes(category)) {
+                        item.style.display = '';
+                        setTimeout(() => {
+                            item.style.opacity = '1';
+                            item.style.transform = 'translateY(0)';
+                        }, 50);
+                    } else {
+                        item.style.opacity = '0';
+                        item.style.transform = 'translateY(10px)';
+                        setTimeout(() => {
+                            item.style.display = 'none';
+                        }, 300);
+                    }
+                });
+            });
+        });
+
+        // Scroll Animation
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Initial animation trigger
+        setTimeout(() => {
+            document.querySelectorAll('.fade-in').forEach(el => {
+                el.classList.add('visible');
+            });
+        }, 100);
+    </script>
+</body>
+</html>

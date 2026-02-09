@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Purchase Successful | MILLERS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        midnight: { 900: '#0B0F1F', 800: '#111827', 700: '#1E293B' },
+                        silver: { 200: '#e2e8f0', 300: '#cbd5e1', 400: '#94a3b8', 500: '#64748b' }
+                    },
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                        display: ['Space Grotesk', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { 
+            background-color: #0B0F1F; 
+            color: #e2e8f0;
+            font-family: 'Outfit', sans-serif;
+        }
+        .font-display { font-family: 'Space Grotesk', sans-serif; }
+        .silver-gradient {
+            background: linear-gradient(135deg, #e2e8f0 0%, #94a3b8 50%, #cbd5e1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .success-check {
+            animation: scaleIn 0.5s ease-out;
+        }
+        @keyframes scaleIn {
+            0% { transform: scale(0); opacity: 0; }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .fade-in {
+            animation: fadeIn 0.8s ease-out forwards;
+            opacity: 0;
+        }
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+    <div class="max-w-lg w-full text-center">
+        <!-- Success Icon -->
+        <div class="success-check w-24 h-24 rounded-full bg-green-500/20 flex items-center justify-center mx-auto mb-8 border-2 border-green-500">
+            <svg class="w-12 h-12 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
+            </svg>
+        </div>
+
+        <!-- Success Message -->
+        <h1 class="font-display text-4xl md:text-5xl font-bold silver-gradient mb-4 fade-in" style="animation-delay: 0.2s">
+            Purchase Complete!
+        </h1>
+
+        <p class="text-silver-400 text-lg mb-2 fade-in" style="animation-delay: 0.4s">
+            Thank you for your purchase.
+        </p>
+
+        <p class="text-silver-300 fade-in" style="animation-delay: 0.5s">
+            Your exclusive beat and license have been sent to your email.
+        </p>
+
+        <!-- What's Next -->
+        <div class="glass-panel bg-midnight-800/50 rounded-2xl p-6 mt-8 border border-silver-500/10 fade-in" style="animation-delay: 0.6s">
+            <h2 class="font-display text-xl font-bold text-white mb-4">What's Next?</h2>
+            
+            <div class="space-y-4 text-left">
+                <div class="flex items-start gap-3">
+                    <div class="w-8 h-8 rounded-full bg-green-500/20 flex items-center justify-center flex-shrink-0 text-green-400 font-bold text-sm">1</div>
+                    <div>
+                        <p class="text-white font-medium">Check Your Email</p>
+                        <p class="text-silver-400 text-sm">Your beat files and exclusive license are attached.</p>
+                    </div>
+                </div>
+
+                <div class="flex items-start gap-3">
+                    <div class="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center flex-shrink-0 text-blue-400 font-bold text-sm">2</div>
+                    <div>
+                        <p class="text-white font-medium">Download Your Files</p>
+                        <p class="text-silver-400 text-sm">Save the WAV file (and stems if purchased) to your computer.</p>
+                    </div>
+                </div>
+
+                <div class="flex items-start gap-3">
+                    <div class="w-8 h-8 rounded-full bg-purple-500/20 flex items-center justify-center flex-shrink-0 text-purple-400 font-bold text-sm">3</div>
+                    <div>
+                        <p class="text-white font-medium">Create Your Hit</p>
+                        <p class="text-silver-400 text-sm">You now own 100% rights to this beat. Make something amazing!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- License Info -->
+        <div class="bg-amber-500/10 rounded-xl p-4 mt-6 border border-amber-500/20 fade-in" style="animation-delay: 0.7s">
+            <div class="flex items-start gap-3">
+                <svg class="w-6 h-6 text-amber-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                </svg>
+                <div class="text-left">
+                    <p class="text-amber-400 font-semibold">Exclusive License</p>
+                    <p class="text-silver-400 text-sm">You have full ownership rights. This beat has been removed from our store and will never be sold again.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Back to Store -->
+        <div class="mt-8 fade-in" style="animation-delay: 0.8s">
+            <a href="beatstore.html" class="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-full font-semibold hover:shadow-lg transition-all transform hover:scale-105">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                </svg>
+                Back to Beatstore
+            </a>
+        </div>
+
+        <!-- Support -->
+        <p class="text-silver-500 text-sm mt-8 fade-in" style="animation-delay: 0.9s">
+            Didn't receive your email? Check your spam folder or <a href="mailto:contact@millersaudio.com" class="text-purple-400 hover:text-purple-300">contact us</a>.
+        </p>
+    </div>
+
+    <script>
+        // Verify the session on load
+        const urlParams = new URLSearchParams(window.location.search);
+        const sessionId = urlParams.get('session_id');
+
+        if (sessionId) {
+            // Optional: Verify session with backend
+            // fetch(`http://localhost:3000/verify-session?session_id=${sessionId}`)
+            //     .then(res => res.json())
+            //     .then(data => console.log('Session verified:', data));
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    
+    <title>Beatstore | MILLERS - Exclusive Beats</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Stripe.js -->
+    <script src="https://js.stripe.com/v3/"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        midnight: { 900: '#0B0F1F', 800: '#111827', 700: '#1E293B', 600: '#1e3a8a' },
+                        silver: { 100: '#f1f5f9', 200: '#e2e8f0', 300: '#cbd5e1', 400: '#94a3b8', 500: '#64748b' }
+                    },
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                        display: ['Space Grotesk', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body { 
+            background-color: #0B0F1F; 
+            color: #e2e8f0;
+            font-family: 'Outfit', sans-serif;
+        }
+        .font-display { font-family: 'Space Grotesk', sans-serif; }
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.4);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(148, 163, 184, 0.1);
+        }
+        .silver-gradient {
+            background: linear-gradient(135deg, #e2e8f0 0%, #94a3b8 50%, #cbd5e1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* Beat Card Styles */
+        .beat-card {
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.6), rgba(17, 24, 39, 0.8));
+            border: 1px solid rgba(148, 163, 184, 0.15);
+            transition: all 0.3s ease;
+        }
+        .beat-card:hover {
+            border-color: rgba(34, 197, 94, 0.4);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        .beat-card.sold {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+        .beat-card.sold::after {
+            content: 'SOLD';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-15deg);
+            background: rgba(239, 68, 68, 0.9);
+            color: white;
+            padding: 0.5rem 2rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+            border-radius: 8px;
+            z-index: 10;
+        }
+        
+        /* Audio Player Styles */
+        .play-btn {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3);
+        }
+        .play-btn:hover {
+            box-shadow: 0 6px 20px rgba(34, 197, 94, 0.5);
+            transform: scale(1.05);
+        }
+        .progress-bar {
+            background: rgba(148, 163, 184, 0.2);
+        }
+        .progress-fill {
+            background: linear-gradient(90deg, #22c55e, #4ade80);
+        }
+        .waveform-bar {
+            background: linear-gradient(to top, #22c55e, #4ade80);
+            animation: wave 1.2s ease-in-out infinite;
+        }
+        .waveform-bar:nth-child(2) { animation-delay: 0.1s; }
+        .waveform-bar:nth-child(3) { animation-delay: 0.2s; }
+        .waveform-bar:nth-child(4) { animation-delay: 0.3s; }
+        .waveform-bar:nth-child(5) { animation-delay: 0.15s; }
+        @keyframes wave {
+            0%, 100% { height: 20%; }
+            50% { height: 100%; }
+        }
+        .playing .waveform-bar {
+            animation-play-state: running;
+        }
+        .paused .waveform-bar {
+            animation-play-state: paused;
+        }
+        
+        /* Buy Button Styles */
+        .buy-btn {
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+        }
+        .buy-btn:hover {
+            box-shadow: 0 6px 20px rgba(139, 92, 246, 0.5);
+            transform: scale(1.02);
+        }
+        .buy-btn:disabled {
+            background: rgba(148, 163, 184, 0.3);
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+        
+        /* Price Tag Styles */
+        .price-tag {
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.2), rgba(34, 197, 94, 0.1));
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+        .price-tag.stems {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(139, 92, 246, 0.1));
+            border: 1px solid rgba(139, 92, 246, 0.3);
+        }
+        
+        /* Exclusive Badge */
+        .exclusive-badge {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+        
+        /* Modal Styles */
+        .modal-overlay {
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+        }
+        .modal-content {
+            background: linear-gradient(145deg, #1E293B, #111827);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+        }
+        
+        /* Scroll Animation */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* BPM and Key Tags */
+        .meta-tag {
+            background: rgba(148, 163, 184, 0.1);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+        }
+    </style>
+</head>
+<body class="antialiased overflow-x-hidden">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 glass-panel border-b border-silver-500/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <a href="index.html" class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-br from-silver-300 to-silver-500 flex items-center justify-center text-midnight-900 font-bold text-xl">M</div>
+                    <span class="font-display font-bold text-2xl silver-gradient tracking-wider">MILLERS</span>
+                </a>
+                <div class="hidden md:flex space-x-8">
+                    <a href="index.html#home" class="text-silver-300 hover:text-white transition-colors text-sm uppercase tracking-wider">Home</a>
+                    <a href="index.html#services" class="text-silver-300 hover:text-white transition-colors text-sm uppercase tracking-wider">Services</a>
+                    <a href="work.html" class="text-silver-300 hover:text-white transition-colors text-sm uppercase tracking-wider">Work & Credits</a>
+                    <a href="beatstore.html" class="text-purple-400 hover:text-purple-300 transition-colors text-sm uppercase tracking-wider font-semibold">Beatstore</a>
+                    <a href="index.html#upload" class="text-silver-300 hover:text-white transition-colors text-sm uppercase tracking-wider">Upload Stems</a>
+                    <a href="index.html#contact" class="text-silver-300 hover:text-white transition-colors text-sm uppercase tracking-wider">Contact</a>
+                </div>
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="md:hidden text-silver-300 hover:text-white">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+            </div>
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="hidden md:hidden pb-4">
+                <a href="index.html#home" class="block py-2 text-silver-300 hover:text-white text-sm uppercase tracking-wider">Home</a>
+                <a href="index.html#services" class="block py-2 text-silver-300 hover:text-white text-sm uppercase tracking-wider">Services</a>
+                <a href="work.html" class="block py-2 text-silver-300 hover:text-white text-sm uppercase tracking-wider">Work & Credits</a>
+                <a href="beatstore.html" class="block py-2 text-purple-400 text-sm uppercase tracking-wider font-semibold">Beatstore</a>
+                <a href="index.html#upload" class="block py-2 text-silver-300 hover:text-white text-sm uppercase tracking-wider">Upload Stems</a>
+                <a href="index.html#contact" class="block py-2 text-silver-300 hover:text-white text-sm uppercase tracking-wider">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-[50vh] flex items-center justify-center pt-20 overflow-hidden">
+        <div class="absolute inset-0 z-0 pointer-events-none">
+            <div class="absolute top-20 right-10 w-96 h-96 bg-purple-600/10 rounded-full blur-[120px]"></div>
+            <div class="absolute bottom-20 left-10 w-72 h-72 bg-green-600/10 rounded-full blur-[100px]"></div>
+        </div>
+        
+        <div class="relative z-10 max-w-7xl mx-auto px-4 text-center">
+            <div class="inline-flex items-center gap-2 px-4 py-2 bg-purple-600/20 rounded-full text-purple-400 text-sm font-semibold mb-6 fade-in">
+                <span>Exclusive License</span>
+            </div>
+            <h1 class="font-display font-bold text-5xl md:text-7xl lg:text-8xl mb-6 leading-none tracking-tighter fade-in" style="transition-delay: 0.1s">
+                <span class="silver-gradient">Beatstore</span>
+            </h1>
+            <p class="text-silver-400 text-lg md:text-xl max-w-2xl mx-auto mb-8 font-light fade-in" style="transition-delay: 0.2s">
+                Exclusive beats sold only once. Each purchase includes full ownership rights and stems (optional).
+            </p>
+            
+            <!-- Exclusive Notice -->
+            <div class="inline-flex items-center gap-3 px-6 py-3 bg-amber-500/20 rounded-xl border border-amber-500/30 fade-in" style="transition-delay: 0.3s">
+                <div class="exclusive-badge w-3 h-3 rounded-full"></div>
+                <span class="text-amber-400 text-sm font-semibold">All beats are EXCLUSIVE - Sold only once per customer</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Info Section -->
+    <section class="py-8 px-4">
+        <div class="max-w-5xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 fade-in">
+                <!-- Basic Package -->
+                <div class="glass-panel rounded-2xl p-6 border border-green-500/30">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-12 h-12 rounded-full bg-green-600/20 flex items-center justify-center text-green-400">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="font-display text-xl font-bold text-white">WAV Only</h3>
+                            <p class="text-green-400 text-2xl font-bold">£50</p>
+                        </div>
+                    </div>
+                    <ul class="space-y-2 text-silver-300 text-sm">
+                        <li class="flex items-center gap-2"><span class="text-green-400">✓</span> High-quality WAV file</li>
+                        <li class="flex items-center gap-2"><span class="text-green-400">✓</span> Exclusive license</li>
+                        <li class="flex items-center gap-2"><span class="text-green-400">✓</span> Full ownership rights</li>
+                        <li class="flex items-center gap-2"><span class="text-green-400">✓</span> License sent via email</li>
+                        <li class="flex items-center gap-2 text-silver-500"><span class="text-silver-500">✗</span> No stems included</li>
+                    </ul>
+                </div>
+
+                <!-- Premium Package -->
+                <div class="glass-panel rounded-2xl p-6 border border-purple-500/30 relative">
+                    <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-purple-600 to-purple-700 text-white text-xs font-bold px-4 py-1 rounded-full uppercase tracking-wider">Most Popular</div>
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-12 h-12 rounded-full bg-purple-600/20 flex items-center justify-center text-purple-400">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="font-display text-xl font-bold text-white">WAV + Stems</h3>
+                            <p class="text-purple-400 text-2xl font-bold">£100</p>
+                        </div>
+                    </div>
+                    <ul class="space-y-2 text-silver-300 text-sm">
+                        <li class="flex items-center gap-2"><span class="text-purple-400">✓</span> High-quality WAV file</li>
+                        <li class="flex items-center gap-2"><span class="text-purple-400">✓</span> Full stems included</li>
+                        <li class="flex items-center gap-2"><span class="text-purple-400">✓</span> Exclusive license</li>
+                        <li class="flex items-center gap-2"><span class="text-purple-400">✓</span> Full ownership rights</li>
+                        <li class="flex items-center gap-2"><span class="text-purple-400">✓</span> License sent via email</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Beats Grid -->
+    <section class="py-8 px-4 pb-20">
+        <div class="max-w-6xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="beats-grid">
+                
+                <!-- Beat 1 -->
+                <div class="beat-card rounded-2xl overflow-hidden relative fade-in" data-beat="beat1" data-sold="false">
+                    <!-- Album Art -->
+                    <div class="relative h-48 bg-gradient-to-br from-purple-600 to-blue-600">
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <div class="waveform-visualizer flex items-end gap-1 h-16 paused" id="viz-beat1">
+                                <div class="waveform-bar w-1.5 rounded-full bg-white/80"></div>
+                                <div class="waveform-bar w-1.5 rounded-full bg-white/80"></div>
+                                <div class="waveform-bar w-1.5 rounded-full bg-white/80"></div>
+                                <div class="waveform-bar w-1.5 rounded-full bg-white/80"></div>
+                                <div class="waveform-bar w-1.5 rounded-full bg-white/80"></div>
+                                <div class="waveform-bar w-1.5 rounded-full bg-white/80"></div>
+                                <div class="waveform-bar w-1.5 rounded-full bg-white/80"></div>
+                            </div>
+                        </div>
+                        <!-- Play Button Overlay -->
+                        <button class="play-btn absolute bottom-4 right-4 w-12 h-12 rounded-full flex items-center justify-center text-white transition-all" onclick="togglePlay('beat1', 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3')">
+                            <svg class="w-5 h-5 play-icon" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M8 5v14l11-7z"/>
+                            </svg>
+                            <svg class="w-5 h-5 pause-icon hidden" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                            </svg>
+                        </button>
+                    </div>
+                    
+                    <!-- Beat Info -->
+                    <div class="p-5">
+                        <div class="flex items-start justify-between mb-3">
+                            <div>
+                                <h3 class="font-display text-lg font-bold text-white">Midnight Trap</h3>
+                                <p class="text-silver-400 text-sm">Dark trap beat with 808s</p>
+                            </div>
+                            <span class="meta-tag px-2 py-1 rounded text-silver-300 text-xs">3:24</span>
+                        </div>
+                        
+                        <!-- Meta Tags -->
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="meta-tag px-2 py-1 rounded text-silver-300 text-xs">140 BPM</span>
+                            <span class="meta-tag px-2 py-1 rounded text-silver-300 text-xs">C Minor</span>
+                            <span class="px-2 py-1 bg-purple-600/20 rounded text-purple-400 text-xs">Trap</span>
+                        </div>
+                        
+                        <!-- Progress Bar -->
+                        <div class="progress-bar h-1.5 rounded-full mb-4 cursor-pointer" onclick="seek(event, 'beat1')">
+                            <div class="progress-fill h-full rounded-full transition-all duration-100" id="progress-beat1" style="width: 0%"></div>
+                        </div>
+                        
+                        <!-- Price Options -->
+                        <div class="space-y-2">
+                            <button class="buy-btn w-full py-3 rounded-xl text-white font-semibold text-sm flex items-center justify-between px-4 transition-all" onclick="openBuyModal('beat1', 'Midnight Trap', 50, false)">
+                                <span>Buy WAV Only</span>
+                                <span class="price-tag px-3 py-1 rounded-lg">£50</span>
+                            </button>
+                            <button class="buy-btn w-full py-3 rounded-xl text-white font-semibold text-sm flex items-center justify-between px-4 transition-all" onclick="openBuyModal('beat1', 'Midnight Trap', 100, true)">
+                                <span>Buy WAV + Stems</span>
+                                <span class="price-tag stems px-3 py-1 rounded-lg">£100</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- More beats can be added here following the same structure -->
+    </section>
+
+    <!-- Buy Modal -->
+    <div id="buy-modal" class="modal-overlay fixed inset-0 z-50 hidden flex items-center justify-center p-4">
+        <div class="modal-content rounded-2xl p-6 max-w-md w-full">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="font-display text-2xl font-bold text-white">Complete Purchase</h3>
+                <button onclick="closeBuyModal()" class="text-silver-400 hover:text-white transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+            
+            <div class="mb-6">
+                <p class="text-silver-400 text-sm mb-2">Beat:</p>
+                <p class="text-white font-semibold text-lg" id="modal-beat-name">-</p>
+            </div>
+            
+            <div class="mb-6">
+                <p class="text-silver-400 text-sm mb-2">Package:</p>
+                <div class="flex items-center gap-3">
+                    <span class="text-white font-semibold" id="modal-package">-</span>
+                    <span class="price-tag px-3 py-1 rounded-lg text-white font-bold" id="modal-price">-</span>
+                </div>
+            </div>
+            
+            <div class="bg-midnight-800/50 rounded-xl p-4 mb-6">
+                <p class="text-silver-400 text-sm mb-2">What's included:</p>
+                <ul class="space-y-1 text-silver-300 text-sm" id="modal-includes">
+                    <li class="flex items-center gap-2"><span class="text-green-400">✓</span> High-quality WAV file</li>
+                    <li class="flex items-center gap-2"><span class="text-green-400">✓</span> Exclusive license</li>
+                    <li class="flex items-center gap-2"><span class="text-green-400">✓</span> Full ownership rights</li>
+                </ul>
+            </div>
+            
+            <div class="bg-amber-500/10 rounded-xl p-4 mb-6 border border-amber-500/20">
+                <div class="flex items-start gap-3">
+                    <div class="exclusive-badge w-3 h-3 rounded-full flex-shrink-0 mt-1"></div>
+                    <div>
+                        <p class="text-amber-400 text-sm font-semibold">Exclusive License</p>
+                        <p class="text-silver-400 text-xs">This beat will be removed from the store after purchase. You'll receive the exclusive license via email.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <button id="checkout-btn" class="buy-btn w-full py-4 rounded-xl text-white font-bold text-lg flex items-center justify-center gap-2 transition-all" onclick="processCheckout()">
+                <span>Proceed to Checkout</span>
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                </svg>
+            </button>
+            
+            <p class="text-center text-silver-500 text-xs mt-4">Powered by Stripe - Secure Payment</p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="border-t border-silver-500/10 py-12 px-4 bg-midnight-900">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+            <a href="index.html" class="flex items-center space-x-3">
+                <div class="w-8 h-8 rounded-full bg-gradient-to-br from-silver-300 to-silver-500 flex items-center justify-center text-midnight-900 font-bold">M</div>
+                <span class="font-display font-bold text-xl silver-gradient tracking-wider">MILLERS</span>
+            </a>
+            
+            <div class="flex space-x-6 text-silver-400">
+                <a href="#" class="hover:text-white transition-colors">IG</a>
+                <a href="#" class="hover:text-white transition-colors">TW</a>
+                <a href="#" class="hover:text-white transition-colors">YT</a>
+                <a href="mailto:contact@millersaudio.com" class="hover:text-white transition-colors">Email</a>
+            </div>
+            
+            <p class="text-silver-500 text-sm">&copy; 2026 MILLERS. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Audio Player Logic
+        const audioPlayers = {};
+        let currentlyPlaying = null;
+
+        function formatTime(seconds) {
+            if (isNaN(seconds)) return '0:00';
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        function togglePlay(beatId, audioUrl) {
+            const btn = document.querySelector(`[data-beat="${beatId}"] .play-btn`);
+            const playIcon = btn.querySelector('.play-icon');
+            const pauseIcon = btn.querySelector('.pause-icon');
+            const viz = document.getElementById(`viz-${beatId}`);
+
+            // Stop currently playing track
+            if (currentlyPlaying && currentlyPlaying !== beatId) {
+                const prevBtn = document.querySelector(`[data-beat="${currentlyPlaying}"] .play-btn`);
+                const prevPlayIcon = prevBtn.querySelector('.play-icon');
+                const prevPauseIcon = prevBtn.querySelector('.pause-icon');
+                const prevViz = document.getElementById(`viz-${currentlyPlaying}`);
+                
+                if (audioPlayers[currentlyPlaying]) {
+                    audioPlayers[currentlyPlaying].pause();
+                }
+                prevPlayIcon.classList.remove('hidden');
+                prevPauseIcon.classList.add('hidden');
+                prevViz.classList.remove('playing');
+                prevViz.classList.add('paused');
+            }
+
+            // Initialize audio if not exists
+            if (!audioPlayers[beatId]) {
+                audioPlayers[beatId] = new Audio(audioUrl);
+                audioPlayers[beatId].addEventListener('timeupdate', () => updateProgress(beatId));
+                audioPlayers[beatId].addEventListener('loadedmetadata', () => updateTime(beatId));
+                audioPlayers[beatId].addEventListener('ended', () => {
+                    playIcon.classList.remove('hidden');
+                    pauseIcon.classList.add('hidden');
+                    viz.classList.remove('playing');
+                    viz.classList.add('paused');
+                    document.getElementById(`progress-${beatId}`).style.width = '0%';
+                    currentlyPlaying = null;
+                });
+            }
+
+            const audio = audioPlayers[beatId];
+
+            if (audio.paused) {
+                audio.play();
+                playIcon.classList.add('hidden');
+                pauseIcon.classList.remove('hidden');
+                viz.classList.add('playing');
+                viz.classList.remove('paused');
+                currentlyPlaying = beatId;
+            } else {
+                audio.pause();
+                playIcon.classList.remove('hidden');
+                pauseIcon.classList.add('hidden');
+                viz.classList.remove('playing');
+                viz.classList.add('paused');
+                currentlyPlaying = null;
+            }
+        }
+
+        function updateProgress(beatId) {
+            const audio = audioPlayers[beatId];
+            if (!audio || !audio.duration) return;
+            const progress = (audio.currentTime / audio.duration) * 100;
+            document.getElementById(`progress-${beatId}`).style.width = `${progress}%`;
+        }
+
+        function updateTime(beatId) {
+            // Time display handled by individual beat cards if needed
+        }
+
+        function seek(event, beatId) {
+            const audio = audioPlayers[beatId];
+            if (!audio || !audio.duration) return;
+            
+            const rect = event.currentTarget.getBoundingClientRect();
+            const clickX = event.clientX - rect.left;
+            const percentage = clickX / rect.width;
+            audio.currentTime = percentage * audio.duration;
+        }
+
+        // Buy Modal Logic
+        let currentBeat = null;
+        let currentPrice = 0;
+        let currentHasStems = false;
+
+        function openBuyModal(beatId, beatName, price, hasStems) {
+            currentBeat = beatId;
+            currentPrice = price;
+            currentHasStems = hasStems;
+
+            document.getElementById('modal-beat-name').textContent = beatName;
+            document.getElementById('modal-price').textContent = `£${price}`;
+            document.getElementById('modal-package').textContent = hasStems ? 'WAV + Stems' : 'WAV Only';
+
+            const includesList = document.getElementById('modal-includes');
+            includesList.innerHTML = `
+                <li class="flex items-center gap-2"><span class="text-green-400">✓</span> High-quality WAV file</li>
+                ${hasStems ? '<li class="flex items-center gap-2"><span class="text-green-400">✓</span> Full stems included</li>' : ''}
+                <li class="flex items-center gap-2"><span class="text-green-400">✓</span> Exclusive license</li>
+                <li class="flex items-center gap-2"><span class="text-green-400">✓</span> Full ownership rights</li>
+                <li class="flex items-center gap-2"><span class="text-green-400">✓</span> License sent via email</li>
+            `;
+
+            document.getElementById('buy-modal').classList.remove('hidden');
+        }
+
+        function closeBuyModal() {
+            document.getElementById('buy-modal').classList.add('hidden');
+            currentBeat = null;
+            currentPrice = 0;
+            currentHasStems = false;
+        }
+
+        // Close modal on overlay click
+        document.getElementById('buy-modal').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('buy-modal')) {
+                closeBuyModal();
+            }
+        });
+
+        // Backend API URL - Change this to your backend server URL
+        const API_URL = 'http://localhost:3000'; // For local testing
+        // const API_URL = 'https://your-backend-server.com'; // For production
+
+        // Stripe Checkout - calls backend to create session
+        async function processCheckout() {
+            const checkoutBtn = document.getElementById('checkout-btn');
+            checkoutBtn.disabled = true;
+            checkoutBtn.innerHTML = '<span class="animate-spin">↻</span> Creating checkout...';
+
+            try {
+                const response = await fetch(`${API_URL}/create-checkout-session`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        beatId: currentBeat,
+                        beatName: document.getElementById('modal-beat-name').textContent,
+                        price: currentPrice,
+                        hasStems: currentHasStems
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.url) {
+                    // Redirect to Stripe Checkout
+                    window.location.href = data.url;
+                } else {
+                    throw new Error('No checkout URL received');
+                }
+            } catch (error) {
+                console.error('Checkout error:', error);
+                alert('Error creating checkout. Please try again.');
+                checkoutBtn.disabled = false;
+                checkoutBtn.innerHTML = `<span>Proceed to Checkout</span><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>`;
+            }
+        }
+
+        // Scroll Animation
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Initial animation trigger
+        setTimeout(() => {
+            document.querySelectorAll('.fade-in').forEach(el => {
+                el.classList.add('visible');
+            });
+        }, 100);
+    </script>
+</body>
+</html>
