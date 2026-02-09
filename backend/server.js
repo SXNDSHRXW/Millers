@@ -28,31 +28,6 @@ const beatFiles = {
         wav: 'https://drive.google.com/drive/folders/1oJZZhl3nKjwkDMo3Ro5kOIVgiD4aAEZT',      // Replace with actual file URLs
         stems: 'https://your-storage.com/beats/beat1_stems.zip' // Replace with actual stems URL
     },
-    'beat2': {
-        name: 'Golden Era',
-        wav: 'https://your-storage.com/beats/beat2.wav',
-        stems: 'https://your-storage.com/beats/beat2_stems.zip'
-    },
-    'beat3': {
-        name: 'Smooth Operator',
-        wav: 'https://your-storage.com/beats/beat3.wav',
-        stems: 'https://your-storage.com/beats/beat3_stems.zip'
-    },
-    'beat4': {
-        name: 'UK Drill',
-        wav: 'https://your-storage.com/beats/beat4.wav',
-        stems: 'https://your-storage.com/beats/beat4_stems.zip'
-    },
-    'beat5': {
-        name: 'Lagos Vibes',
-        wav: 'https://your-storage.com/beats/beat5.wav',
-        stems: 'https://your-storage.com/beats/beat5_stems.zip'
-    },
-    'beat6': {
-        name: 'Ocean Waves',
-        wav: 'https://your-storage.com/beats/beat6.wav',
-        stems: 'https://your-storage.com/beats/beat6_stems.zip'
-    }
 };
 
 // Create Stripe Checkout Session
