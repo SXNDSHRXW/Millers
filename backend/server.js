@@ -24,8 +24,8 @@ const transporter = nodemailer.createTransport({
 // Store your beat files in a secure location (AWS S3, Google Cloud Storage, or local)
 const beatFiles = {
     'beat1': {
-        name: 'Midnight Trap',
-        wav: 'https://your-storage.com/beats/beat1.wav',      // Replace with actual file URLs
+        name: 'GN1',
+        wav: 'https://drive.google.com/drive/folders/1oJZZhl3nKjwkDMo3Ro5kOIVgiD4aAEZT',      // Replace with actual file URLs
         stems: 'https://your-storage.com/beats/beat1_stems.zip' // Replace with actual stems URL
     },
     'beat2': {
