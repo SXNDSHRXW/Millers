@@ -196,13 +196,12 @@
                 <div class="hidden md:flex space-x-8">
                     <a href="index.html#home" class="text-silver-300 hover:text-white transition-colors text-sm uppercase tracking-wider">Home</a>
                     <a href="index.html#services" class="text-silver-300 hover:text-white transition-colors text-sm uppercase tracking-wider">Services</a>
-                    <a href="work.html" class="text-silver-300 hover:text-white transition-colors text-sm uppercase tracking-wider">Work & Credits</a>
                     <a href="beatstore.html" class="text-purple-400 hover:text-purple-300 transition-colors text-sm uppercase tracking-wider font-semibold">Beatstore</a>
                     <a href="index.html#upload" class="text-silver-300 hover:text-white transition-colors text-sm uppercase tracking-wider">Upload Stems</a>
                     <a href="index.html#contact" class="text-silver-300 hover:text-white transition-colors text-sm uppercase tracking-wider">Contact</a>
                 </div>
                 <!-- Mobile Menu Button -->
-                <button id="mobile-menu-btn" class="md:hidden text-silver-300 hover:text-white">
+                <button id="mobile-menu-btn" class="md:hidden text-silver-300 hover:text-white" title="Toggle menu">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
                     </svg>
@@ -212,7 +211,6 @@
             <div id="mobile-menu" class="hidden md:hidden pb-4">
                 <a href="index.html#home" class="block py-2 text-silver-300 hover:text-white text-sm uppercase tracking-wider">Home</a>
                 <a href="index.html#services" class="block py-2 text-silver-300 hover:text-white text-sm uppercase tracking-wider">Services</a>
-                <a href="work.html" class="block py-2 text-silver-300 hover:text-white text-sm uppercase tracking-wider">Work & Credits</a>
                 <a href="beatstore.html" class="block py-2 text-purple-400 text-sm uppercase tracking-wider font-semibold">Beatstore</a>
                 <a href="index.html#upload" class="block py-2 text-silver-300 hover:text-white text-sm uppercase tracking-wider">Upload Stems</a>
                 <a href="index.html#contact" class="block py-2 text-silver-300 hover:text-white text-sm uppercase tracking-wider">Contact</a>
@@ -260,7 +258,7 @@
                         </div>
                         <div>
                             <h3 class="font-display text-xl font-bold text-white">WAV Only</h3>
-                            <p class="text-green-400 text-2xl font-bold">£50</p>
+                            <p class="text-green-400 text-2xl font-bold">£75</p>
                         </div>
                     </div>
                     <ul class="space-y-2 text-silver-300 text-sm">
@@ -283,7 +281,7 @@
                         </div>
                         <div>
                             <h3 class="font-display text-xl font-bold text-white">WAV + Stems</h3>
-                            <p class="text-purple-400 text-2xl font-bold">£100</p>
+                            <p class="text-purple-400 text-2xl font-bold">£150</p>
                         </div>
                     </div>
                     <ul class="space-y-2 text-silver-300 text-sm">
@@ -319,7 +317,7 @@
                             </div>
                         </div>
                         <!-- Play Button Overlay -->
-                        <button class="play-btn absolute bottom-4 right-4 w-12 h-12 rounded-full flex items-center justify-center text-white transition-all" onclick="togglePlay('beat1', 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3')">
+                        <button class="play-btn absolute bottom-4 right-4 w-12 h-12 rounded-full flex items-center justify-center text-white transition-all" onclick="togglePlay('beat1', '/preview/beat1')" title="Play Money! beat">
                             <svg class="w-5 h-5 play-icon" fill="currentColor" viewBox="0 0 24 24">
                                 <path d="M8 5v14l11-7z"/>
                             </svg>
@@ -333,17 +331,17 @@
                     <div class="p-5">
                         <div class="flex items-start justify-between mb-3">
                             <div>
-                                <h3 class="font-display text-lg font-bold text-white">Midnight Trap</h3>
-                                <p class="text-silver-400 text-sm">Dark trap beat with 808s</p>
+                                <h3 class="font-display text-lg font-bold text-white">Money</h3>
+                                <p class="text-silver-400 text-sm">BoomBap</p>
                             </div>
-                            <span class="meta-tag px-2 py-1 rounded text-silver-300 text-xs">3:24</span>
+                            <span class="meta-tag px-2 py-1 rounded text-silver-300 text-xs">4:02</span>
                         </div>
                         
                         <!-- Meta Tags -->
                         <div class="flex flex-wrap gap-2 mb-4">
-                            <span class="meta-tag px-2 py-1 rounded text-silver-300 text-xs">140 BPM</span>
-                            <span class="meta-tag px-2 py-1 rounded text-silver-300 text-xs">C Minor</span>
-                            <span class="px-2 py-1 bg-purple-600/20 rounded text-purple-400 text-xs">Trap</span>
+                            <span class="meta-tag px-2 py-1 rounded text-silver-300 text-xs">95 BPM</span>
+                            <span class="meta-tag px-2 py-1 rounded text-silver-300 text-xs">E Minor</span>
+                            <span class="px-2 py-1 bg-purple-600/20 rounded text-purple-400 text-xs">Hip-Hop</span>
                         </div>
                         
                         <!-- Progress Bar -->
@@ -353,20 +351,20 @@
                         
                         <!-- Price Options -->
                         <div class="space-y-2">
-                            <button class="buy-btn w-full py-3 rounded-xl text-white font-semibold text-sm flex items-center justify-between px-4 transition-all" onclick="openBuyModal('beat1', 'Midnight Trap', 50, false)">
+                            <a href="https://buy.stripe.com/28E9ATf5p49db2vaRU1sQ01" class="buy-btn w-full py-3 rounded-xl text-white font-semibold text-sm flex items-center justify-between px-4 transition-all" target="_blank">
                                 <span>Buy WAV Only</span>
-                                <span class="price-tag px-3 py-1 rounded-lg">£50</span>
-                            </button>
-                            <button class="buy-btn w-full py-3 rounded-xl text-white font-semibold text-sm flex items-center justify-between px-4 transition-all" onclick="openBuyModal('beat1', 'Midnight Trap', 100, true)">
+                                <span class="price-tag px-3 py-1 rounded-lg">£75</span>
+                            </a>
+                            <a href="https://buy.stripe.com/dRm28r7CXeNReeH4tw1sQ02" class="buy-btn w-full py-3 rounded-xl text-white font-semibold text-sm flex items-center justify-between px-4 transition-all" target="_blank">
                                 <span>Buy WAV + Stems</span>
-                                <span class="price-tag stems px-3 py-1 rounded-lg">£100</span>
-                            </button>
+                                <span class="price-tag stems px-3 py-1 rounded-lg">£150</span>
+                            </a>
                         </div>
                     </div>
                 </div>
 
                 <!-- Beat 2 -->
-                <div class="beat-card rounded-2xl overflow-hidden relative fade-in" data-beat="beat2" data-sold="false">
+                <div class="beat-card rounded-2xl overflow-hidden relative fade-in hidden" data-beat="beat2" data-sold="false">
                     <div class="relative h-48 bg-gradient-to-br from-amber-600 to-orange-600">
                         <div class="absolute inset-0 flex items-center justify-center">
                             <div class="waveform-visualizer flex items-end gap-1 h-16 paused" id="viz-beat2">
@@ -379,7 +377,7 @@
                                 <div class="waveform-bar w-1.5 rounded-full bg-white/80"></div>
                             </div>
                         </div>
-                        <button class="play-btn absolute bottom-4 right-4 w-12 h-12 rounded-full flex items-center justify-center text-white transition-all" onclick="togglePlay('beat2', 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3')">
+                        <button class="play-btn absolute bottom-4 right-4 w-12 h-12 rounded-full flex items-center justify-center text-white transition-all" onclick="togglePlay('beat2', '/preview/beat2')" title="Play Golden Era beat">
                             <svg class="w-5 h-5 play-icon" fill="currentColor" viewBox="0 0 24 24">
                                 <path d="M8 5v14l11-7z"/>
                             </svg>
@@ -405,20 +403,20 @@
                             <div class="progress-fill h-full rounded-full transition-all duration-100" id="progress-beat2" style="width: 0%"></div>
                         </div>
                         <div class="space-y-2">
-                            <button class="buy-btn w-full py-3 rounded-xl text-white font-semibold text-sm flex items-center justify-between px-4 transition-all" onclick="openBuyModal('beat2', 'Golden Era', 50, false)">
+                            <a href="https://buy.stripe.com/28E9ATf5p49db2vaRU1sQ01" class="buy-btn w-full py-3 rounded-xl text-white font-semibold text-sm flex items-center justify-between px-4 transition-all" target="_blank">
                                 <span>Buy WAV Only</span>
-                                <span class="price-tag px-3 py-1 rounded-lg">£50</span>
-                            </button>
-                            <button class="buy-btn w-full py-3 rounded-xl text-white font-semibold text-sm flex items-center justify-between px-4 transition-all" onclick="openBuyModal('beat2', 'Golden Era', 100, true)">
+                                <span class="price-tag px-3 py-1 rounded-lg">£75</span>
+                            </a>
+                            <a href="https://buy.stripe.com/dRm28r7CXeNReeH4tw1sQ02" class="buy-btn w-full py-3 rounded-xl text-white font-semibold text-sm flex items-center justify-between px-4 transition-all" target="_blank">
                                 <span>Buy WAV + Stems</span>
-                                <span class="price-tag stems px-3 py-1 rounded-lg">£100</span>
-                            </button>
+                                <span class="price-tag stems px-3 py-1 rounded-lg">£150</span>
+                            </a>
                         </div>
                     </div>
                 </div>
 
                 <!-- Beat 3 -->
-                <div class="beat-card rounded-2xl overflow-hidden relative fade-in" data-beat="beat3" data-sold="false">
+                <div class="beat-card rounded-2xl overflow-hidden relative fade-in hidden" data-beat="beat3" data-sold="false">
                     <div class="relative h-48 bg-gradient-to-br from-blue-600 to-cyan-600">
                         <div class="absolute inset-0 flex items-center justify-center">
                             <div class="waveform-visualizer flex items-end gap-1 h-16 paused" id="viz-beat3">
@@ -431,7 +429,7 @@
                                 <div class="waveform-bar w-1.5 rounded-full bg-white/80"></div>
                             </div>
                         </div>
-                        <button class="play-btn absolute bottom-4 right-4 w-12 h-12 rounded-full flex items-center justify-center text-white transition-all" onclick="togglePlay('beat3', 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3')">
+                        <button class="play-btn absolute bottom-4 right-4 w-12 h-12 rounded-full flex items-center justify-center text-white transition-all" onclick="togglePlay('beat3', '/preview/beat3')" title="Play Smooth Operator beat">
                             <svg class="w-5 h-5 play-icon" fill="currentColor" viewBox="0 0 24 24">
                                 <path d="M8 5v14l11-7z"/>
                             </svg>
@@ -457,20 +455,20 @@
                             <div class="progress-fill h-full rounded-full transition-all duration-100" id="progress-beat3" style="width: 0%"></div>
                         </div>
                         <div class="space-y-2">
-                            <button class="buy-btn w-full py-3 rounded-xl text-white font-semibold text-sm flex items-center justify-between px-4 transition-all" onclick="openBuyModal('beat3', 'Smooth Operator', 50, false)">
+                            <a href="https://buy.stripe.com/28E9ATf5p49db2vaRU1sQ01" class="buy-btn w-full py-3 rounded-xl text-white font-semibold text-sm flex items-center justify-between px-4 transition-all" target="_blank">
                                 <span>Buy WAV Only</span>
-                                <span class="price-tag px-3 py-1 rounded-lg">£50</span>
-                            </button>
-                            <button class="buy-btn w-full py-3 rounded-xl text-white font-semibold text-sm flex items-center justify-between px-4 transition-all" onclick="openBuyModal('beat3', 'Smooth Operator', 100, true)">
+                                <span class="price-tag px-3 py-1 rounded-lg">£75</span>
+                            </a>
+                            <a href="https://buy.stripe.com/dRm28r7CXeNReeH4tw1sQ02" class="buy-btn w-full py-3 rounded-xl text-white font-semibold text-sm flex items-center justify-between px-4 transition-all" target="_blank">
                                 <span>Buy WAV + Stems</span>
-                                <span class="price-tag stems px-3 py-1 rounded-lg">£100</span>
-                            </button>
+                                <span class="price-tag stems px-3 py-1 rounded-lg">£150</span>
+                            </a>
                         </div>
                     </div>
                 </div>
 
                 <!-- Beat 4 -->
-                <div class="beat-card rounded-2xl overflow-hidden relative fade-in" data-beat="beat4" data-sold="false">
+                <div class="beat-card rounded-2xl overflow-hidden relative fade-in hidden" data-beat="beat4" data-sold="false">
                     <div class="relative h-48 bg-gradient-to-br from-red-700 to-pink-600">
                         <div class="absolute inset-0 flex items-center justify-center">
                             <div class="waveform-visualizer flex items-end gap-1 h-16 paused" id="viz-beat4">
@@ -483,7 +481,7 @@
                                 <div class="waveform-bar w-1.5 rounded-full bg-white/80"></div>
                             </div>
                         </div>
-                        <button class="play-btn absolute bottom-4 right-4 w-12 h-12 rounded-full flex items-center justify-center text-white transition-all" onclick="togglePlay('beat4', 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3')">
+                        <button class="play-btn absolute bottom-4 right-4 w-12 h-12 rounded-full flex items-center justify-center text-white transition-all" onclick="togglePlay('beat4', '/preview/beat4')" title="Play UK Drill beat">
                             <svg class="w-5 h-5 play-icon" fill="currentColor" viewBox="0 0 24 24">
                                 <path d="M8 5v14l11-7z"/>
                             </svg>
@@ -509,20 +507,20 @@
                             <div class="progress-fill h-full rounded-full transition-all duration-100" id="progress-beat4" style="width: 0%"></div>
                         </div>
                         <div class="space-y-2">
-                            <button class="buy-btn w-full py-3 rounded-xl text-white font-semibold text-sm flex items-center justify-between px-4 transition-all" onclick="openBuyModal('beat4', 'UK Drill', 50, false)">
+                            <a href="https://buy.stripe.com/28E9ATf5p49db2vaRU1sQ01" class="buy-btn w-full py-3 rounded-xl text-white font-semibold text-sm flex items-center justify-between px-4 transition-all" target="_blank">
                                 <span>Buy WAV Only</span>
-                                <span class="price-tag px-3 py-1 rounded-lg">£50</span>
-                            </button>
-                            <button class="buy-btn w-full py-3 rounded-xl text-white font-semibold text-sm flex items-center justify-between px-4 transition-all" onclick="openBuyModal('beat4', 'UK Drill', 100, true)">
+                                <span class="price-tag px-3 py-1 rounded-lg">£75</span>
+                            </a>
+                            <a href="https://buy.stripe.com/dRm28r7CXeNReeH4tw1sQ02" class="buy-btn w-full py-3 rounded-xl text-white font-semibold text-sm flex items-center justify-between px-4 transition-all" target="_blank">
                                 <span>Buy WAV + Stems</span>
-                                <span class="price-tag stems px-3 py-1 rounded-lg">£100</span>
-                            </button>
+                                <span class="price-tag stems px-3 py-1 rounded-lg">£150</span>
+                            </a>
                         </div>
                     </div>
                 </div>
 
                 <!-- Beat 5 -->
-                <div class="beat-card rounded-2xl overflow-hidden relative fade-in" data-beat="beat5" data-sold="false">
+                <div class="beat-card rounded-2xl overflow-hidden relative fade-in hidden" data-beat="beat5" data-sold="false">
                     <div class="relative h-48 bg-gradient-to-br from-green-600 to-emerald-600">
                         <div class="absolute inset-0 flex items-center justify-center">
                             <div class="waveform-visualizer flex items-end gap-1 h-16 paused" id="viz-beat5">
@@ -535,7 +533,7 @@
                                 <div class="waveform-bar w-1.5 rounded-full bg-white/80"></div>
                             </div>
                         </div>
-                        <button class="play-btn absolute bottom-4 right-4 w-12 h-12 rounded-full flex items-center justify-center text-white transition-all" onclick="togglePlay('beat5', 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3')">
+                        <button class="play-btn absolute bottom-4 right-4 w-12 h-12 rounded-full flex items-center justify-center text-white transition-all" onclick="togglePlay('beat5', '/preview/beat5')" title="Play Lagos Vibes beat">
                             <svg class="w-5 h-5 play-icon" fill="currentColor" viewBox="0 0 24 24">
                                 <path d="M8 5v14l11-7z"/>
                             </svg>
@@ -561,20 +559,20 @@
                             <div class="progress-fill h-full rounded-full transition-all duration-100" id="progress-beat5" style="width: 0%"></div>
                         </div>
                         <div class="space-y-2">
-                            <button class="buy-btn w-full py-3 rounded-xl text-white font-semibold text-sm flex items-center justify-between px-4 transition-all" onclick="openBuyModal('beat5', 'Lagos Vibes', 50, false)">
+                            <a href="https://buy.stripe.com/28E9ATf5p49db2vaRU1sQ01" class="buy-btn w-full py-3 rounded-xl text-white font-semibold text-sm flex items-center justify-between px-4 transition-all" target="_blank">
                                 <span>Buy WAV Only</span>
-                                <span class="price-tag px-3 py-1 rounded-lg">£50</span>
-                            </button>
-                            <button class="buy-btn w-full py-3 rounded-xl text-white font-semibold text-sm flex items-center justify-between px-4 transition-all" onclick="openBuyModal('beat5', 'Lagos Vibes', 100, true)">
+                                <span class="price-tag px-3 py-1 rounded-lg">£75</span>
+                            </a>
+                            <a href="https://buy.stripe.com/dRm28r7CXeNReeH4tw1sQ02" class="buy-btn w-full py-3 rounded-xl text-white font-semibold text-sm flex items-center justify-between px-4 transition-all" target="_blank">
                                 <span>Buy WAV + Stems</span>
-                                <span class="price-tag stems px-3 py-1 rounded-lg">£100</span>
-                            </button>
+                                <span class="price-tag stems px-3 py-1 rounded-lg">£150</span>
+                            </a>
                         </div>
                     </div>
                 </div>
 
                 <!-- Beat 6 -->
-                <div class="beat-card rounded-2xl overflow-hidden relative fade-in" data-beat="beat6" data-sold="false">
+                <div class="beat-card rounded-2xl overflow-hidden relative fade-in hidden" data-beat="beat6" data-sold="false">
                     <div class="relative h-48 bg-gradient-to-br from-indigo-600 to-purple-600">
                         <div class="absolute inset-0 flex items-center justify-center">
                             <div class="waveform-visualizer flex items-end gap-1 h-16 paused" id="viz-beat6">
@@ -587,7 +585,7 @@
                                 <div class="waveform-bar w-1.5 rounded-full bg-white/80"></div>
                             </div>
                         </div>
-                        <button class="play-btn absolute bottom-4 right-4 w-12 h-12 rounded-full flex items-center justify-center text-white transition-all" onclick="togglePlay('beat6', 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3')">
+                        <button class="play-btn absolute bottom-4 right-4 w-12 h-12 rounded-full flex items-center justify-center text-white transition-all" onclick="togglePlay('beat6', '/preview/beat6')" title="Play Ocean Waves beat">
                             <svg class="w-5 h-5 play-icon" fill="currentColor" viewBox="0 0 24 24">
                                 <path d="M8 5v14l11-7z"/>
                             </svg>
@@ -613,14 +611,14 @@
                             <div class="progress-fill h-full rounded-full transition-all duration-100" id="progress-beat6" style="width: 0%"></div>
                         </div>
                         <div class="space-y-2">
-                            <button class="buy-btn w-full py-3 rounded-xl text-white font-semibold text-sm flex items-center justify-between px-4 transition-all" onclick="openBuyModal('beat6', 'Ocean Waves', 50, false)">
+                            <a href="https://buy.stripe.com/28E9ATf5p49db2vaRU1sQ01" class="buy-btn w-full py-3 rounded-xl text-white font-semibold text-sm flex items-center justify-between px-4 transition-all" target="_blank">
                                 <span>Buy WAV Only</span>
-                                <span class="price-tag px-3 py-1 rounded-lg">£50</span>
-                            </button>
-                            <button class="buy-btn w-full py-3 rounded-xl text-white font-semibold text-sm flex items-center justify-between px-4 transition-all" onclick="openBuyModal('beat6', 'Ocean Waves', 100, true)">
+                                <span class="price-tag px-3 py-1 rounded-lg">£75</span>
+                            </a>
+                            <a href="https://buy.stripe.com/dRm28r7CXeNReeH4tw1sQ02" class="buy-btn w-full py-3 rounded-xl text-white font-semibold text-sm flex items-center justify-between px-4 transition-all" target="_blank">
                                 <span>Buy WAV + Stems</span>
-                                <span class="price-tag stems px-3 py-1 rounded-lg">£100</span>
-                            </button>
+                                <span class="price-tag stems px-3 py-1 rounded-lg">£150</span>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -631,7 +629,7 @@
         <div class="modal-content rounded-2xl p-6 max-w-md w-full">
             <div class="flex justify-between items-center mb-6">
                 <h3 class="font-display text-2xl font-bold text-white">Complete Purchase</h3>
-                <button onclick="closeBuyModal()" class="text-silver-400 hover:text-white transition-colors">
+                <button onclick="closeBuyModal()" class="text-silver-400 hover:text-white transition-colors" title="Close modal">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                     </svg>
@@ -721,6 +719,11 @@
         }
 
         function togglePlay(beatId, audioUrl) {
+            // Ensure audioUrl is absolute
+            if (!audioUrl.startsWith('http') && !audioUrl.startsWith('https')) {
+                audioUrl = window.location.origin + audioUrl;
+            }
+            
             const btn = document.querySelector(`[data-beat="${beatId}"] .play-btn`);
             const playIcon = btn.querySelector('.play-icon');
             const pauseIcon = btn.querySelector('.pause-icon');
@@ -744,9 +747,20 @@
 
             // Initialize audio if not exists
             if (!audioPlayers[beatId]) {
-                audioPlayers[beatId] = new Audio(audioUrl);
+                console.log(`Loading beat: ${beatId} from ${audioUrl} (origin: ${window.location.origin})`);
+                const audio = new Audio(audioUrl);
+                audio.preload = 'metadata';
+                audioPlayers[beatId] = audio;
+                audioPlayers[beatId].crossOrigin = 'anonymous';
                 audioPlayers[beatId].addEventListener('timeupdate', () => updateProgress(beatId));
                 audioPlayers[beatId].addEventListener('loadedmetadata', () => updateTime(beatId));
+                audioPlayers[beatId].addEventListener('canplay', () => {
+                    console.log(`Beat ${beatId} loaded successfully`);
+                });
+                audioPlayers[beatId].addEventListener('error', (e) => {
+                    console.error(`Error loading beat ${beatId}:`, audioPlayers[beatId].error);
+                    alert(`Error loading beat: ${audioPlayers[beatId].error?.message || 'Unknown error'}`);
+                });
                 audioPlayers[beatId].addEventListener('ended', () => {
                     playIcon.classList.remove('hidden');
                     pauseIcon.classList.add('hidden');

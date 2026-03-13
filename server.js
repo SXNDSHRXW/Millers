@@ -2,6 +2,10 @@ const express = require('express');
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const nodemailer = require('nodemailer');
 const cors = require('cors');
+const fs = require('fs');
+const path = require('path');
+const https = require('https');
+const http = require('http');
 require('dotenv').config();
 
 const app = express();
@@ -9,6 +13,7 @@ const app = express();
 // Middleware
 app.use(cors());
 app.use(express.json());
+app.use(express.static('.'));  // Serve all files from current directory
 app.use(express.static('public'));
 
 // Email configuration (using Gmail as example - you can use SendGrid, AWS SES, etc.)
@@ -20,56 +25,59 @@ const transporter = nodemailer.createTransport({
     }
 });
 
+// Stripe Product Configuration
+// These are your Stripe product IDs - update with your actual price IDs from Stripe dashboard
+const stripeProducts = {
+    wavOnly: process.env.STRIPE_PRICE_WAV_ONLY || 'price_YOUR_WAV_ONLY_PRICE_ID',  // Replace with actual price ID
+    wavWithStems: process.env.STRIPE_PRICE_WAV_STEMS || 'price_YOUR_WAV_STEMS_PRICE_ID'  // Replace with actual price ID
+};
+
 // Beat files configuration
 // Store your beat files in a secure location (AWS S3, Google Cloud Storage, or local)
 const beatFiles = {
     'beat1': {
-        name: 'Midnight Trap',
-        wav: 'https://your-storage.com/beats/beat1.wav',      // Replace with actual file URLs
-        stems: 'https://your-storage.com/beats/beat1_stems.zip' // Replace with actual stems URL
+        name: 'Money',
+        wav: 'C:\\Users\\Andy\\Desktop\\millers website\\Beats\\Money.wav',
+        stems: 'C:\\Users\\Andy\\Desktop\\millers website\\Beats\\Money_Stems.zip'
     },
     'beat2': {
         name: 'Golden Era',
-        wav: 'https://your-storage.com/beats/beat2.wav',
-        stems: 'https://your-storage.com/beats/beat2_stems.zip'
+        wav: 'C:\\Users\\Andy\\Desktop\\millers website\\Beats\\Golden Era.wav',
+        stems: 'C:\\Users\\Andy\\Desktop\\millers website\\Beats\\Golden Era_Stems.zip'
     },
     'beat3': {
         name: 'Smooth Operator',
-        wav: 'https://your-storage.com/beats/beat3.wav',
-        stems: 'https://your-storage.com/beats/beat3_stems.zip'
+        wav: 'C:\\Users\\Andy\\Desktop\\millers website\\Beats\\Smooth Operator.wav',
+        stems: 'C:\\Users\\Andy\\Desktop\\millers website\\Beats\\Smooth Operator_Stems.zip'
     },
     'beat4': {
         name: 'UK Drill',
-        wav: 'https://your-storage.com/beats/beat4.wav',
-        stems: 'https://your-storage.com/beats/beat4_stems.zip'
+        wav: 'C:\\Users\\Andy\\Desktop\\millers website\\Beats\\UK Drill.wav',
+        stems: 'C:\\Users\\Andy\\Desktop\\millers website\\Beats\\UK Drill_Stems.zip'
     },
     'beat5': {
         name: 'Lagos Vibes',
-        wav: 'https://your-storage.com/beats/beat5.wav',
-        stems: 'https://your-storage.com/beats/beat5_stems.zip'
+        wav: 'C:\\Users\\Andy\\Desktop\\millers website\\Beats\\Lagos Vibes.wav',
+        stems: 'C:\\Users\\Andy\\Desktop\\millers website\\Beats\\Lagos Vibes_Stems.zip'
     },
     'beat6': {
         name: 'Ocean Waves',
-        wav: 'https://your-storage.com/beats/beat6.wav',
-        stems: 'https://your-storage.com/beats/beat6_stems.zip'
+        wav: 'C:\\Users\\Andy\\Desktop\\millers website\\Beats\\Ocean Waves.wav',
+        stems: 'C:\\Users\\Andy\\Desktop\\millers website\\Beats\\Ocean Waves_Stems.zip'
     }
 };
 
 // Create Stripe Checkout Session
 app.post('/create-checkout-session', async (req, res) => {
     try {
-        const { beatId, beatName, price, hasStems, customerEmail } = req.body;
+        const { beatId, beatName, hasStems, customerEmail } = req.body;
 
-        // Create line items
+        // Select the correct price ID based on product type
+        const priceId = hasStems ? stripeProducts.wavWithStems : stripeProducts.wavOnly;
+
+        // Create line items using Stripe product prices
         const lineItems = [{
-            price_data: {
-                currency: 'gbp',
-                product_data: {
-                    name: `${beatName} - ${hasStems ? 'WAV + Stems' : 'WAV Only'}`,
-                    description: `Exclusive license for ${beatName}`,
-                },
-                unit_amount: price * 100, // Convert to pence
-            },
+            price: priceId,
             quantity: 1,
         }];
 
@@ -206,6 +214,51 @@ async function sendBeatFiles(email, beatId, beatName, hasStems) {
         console.error('Error sending email:', error);
     }
 }
+
+// Serve beat preview endpoint
+app.get('/preview/:beatId', (req, res) => {
+    const beat = beatFiles[req.params.beatId];
+    if (!beat) {
+        return res.status(404).json({ error: 'Beat not found' });
+    }
+    
+    const filePath = beat.wav;
+    
+    // Set CORS headers
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Range');
+    res.setHeader('Accept-Ranges', 'bytes');
+    
+    // Check if it's a URL
+    if (filePath.startsWith('http://') || filePath.startsWith('https://')) {
+        const protocol = filePath.startsWith('https') ? https : http;
+        protocol.get(filePath, (response) => {
+            res.setHeader('Content-Type', 'audio/wav');
+            res.setHeader('Content-Length', response.headers['content-length']);
+            response.pipe(res);
+        }).on('error', (err) => {
+            console.error('Error fetching file from URL:', err);
+            res.status(500).json({ error: 'Error loading beat' });
+        });
+    } else {
+        // Local file
+        fs.stat(filePath, (err, stats) => {
+            if (err) {
+                console.error('File not found:', filePath);
+                return res.status(404).json({ error: 'Beat file not found: ' + filePath });
+            }
+            res.setHeader('Content-Type', 'audio/wav');
+            res.setHeader('Content-Length', stats.size);
+            const stream = fs.createReadStream(filePath);
+            stream.on('error', (err) => {
+                console.error('Stream error:', err);
+                res.status(500).json({ error: 'Error streaming beat file' });
+            });
+            stream.pipe(res);
+        });
+    }
+});
 
 // Verify session endpoint (for success page)
 app.get('/verify-session', async (req, res) => {
