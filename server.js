@@ -13,6 +13,16 @@ const app = express();
 // Middleware
 app.use(cors());
 app.use(express.json());
+
+// Redirect to Railway URL
+app.use((req, res, next) => {
+  const host = req.get('host');
+  if (host && !host.includes('millerss.up.railway.app')) {
+    return res.redirect(`https://millerss.up.railway.app${req.originalUrl}`);
+  }
+  next();
+});
+
 app.use(express.static('.'));  // Serve all files from current directory
 app.use(express.static('public'));
 
@@ -37,33 +47,33 @@ const stripeProducts = {
 const beatFiles = {
     'beat1': {
         name: 'Money',
-        wav: 'C:\\Users\\Andy\\Desktop\\millers website\\Beats\\Money.wav',
-        stems: 'C:\\Users\\Andy\\Desktop\\millers website\\Beats\\Money_Stems.zip'
+        wav: path.join(__dirname, 'Beats', 'MONEY 1.wav'),
+        stems: path.join(__dirname, 'Beats', 'MONEY 1_Stems.zip')
     },
     'beat2': {
         name: 'Golden Era',
-        wav: 'C:\\Users\\Andy\\Desktop\\millers website\\Beats\\Golden Era.wav',
-        stems: 'C:\\Users\\Andy\\Desktop\\millers website\\Beats\\Golden Era_Stems.zip'
+        wav: path.join(__dirname, 'Beats', 'MONEY 1.wav'),
+        stems: path.join(__dirname, 'Beats', 'MONEY 1_Stems.zip')
     },
     'beat3': {
         name: 'Smooth Operator',
-        wav: 'C:\\Users\\Andy\\Desktop\\millers website\\Beats\\Smooth Operator.wav',
-        stems: 'C:\\Users\\Andy\\Desktop\\millers website\\Beats\\Smooth Operator_Stems.zip'
+        wav: path.join(__dirname, 'Beats', 'MONEY 1.wav'),
+        stems: path.join(__dirname, 'Beats', 'MONEY 1_Stems.zip')
     },
     'beat4': {
         name: 'UK Drill',
-        wav: 'C:\\Users\\Andy\\Desktop\\millers website\\Beats\\UK Drill.wav',
-        stems: 'C:\\Users\\Andy\\Desktop\\millers website\\Beats\\UK Drill_Stems.zip'
+        wav: path.join(__dirname, 'Beats', 'MONEY 1.wav'),
+        stems: path.join(__dirname, 'Beats', 'MONEY 1_Stems.zip')
     },
     'beat5': {
         name: 'Lagos Vibes',
-        wav: 'C:\\Users\\Andy\\Desktop\\millers website\\Beats\\Lagos Vibes.wav',
-        stems: 'C:\\Users\\Andy\\Desktop\\millers website\\Beats\\Lagos Vibes_Stems.zip'
+        wav: path.join(__dirname, 'Beats', 'MONEY 1.wav'),
+        stems: path.join(__dirname, 'Beats', 'MONEY 1_Stems.zip')
     },
     'beat6': {
         name: 'Ocean Waves',
-        wav: 'C:\\Users\\Andy\\Desktop\\millers website\\Beats\\Ocean Waves.wav',
-        stems: 'C:\\Users\\Andy\\Desktop\\millers website\\Beats\\Ocean Waves_Stems.zip'
+        wav: path.join(__dirname, 'Beats', 'MONEY 1.wav'),
+        stems: path.join(__dirname, 'Beats', 'MONEY 1_Stems.zip')
     }
 };
 

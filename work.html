@@ -149,20 +149,22 @@
                     <a href="index.html#contact" class="text-silver-300 hover:text-white transition-colors text-sm uppercase tracking-wider">Contact</a>
                 </div>
                 <!-- Mobile Menu Button -->
-            </button> id="mobile-menu-btn" class="md:hidden text-silver-300 hover:text-white">
+                <button id="mobile-menu-btn" class="md:hidden text-white p-2">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
                     </svg>
                 </button>
             </div>
             <!-- Mobile Menu -->
-            <div id="mobile-menu" class="hidden md:hidden pb-4">
-                <a href="index.html#home" class="block py-2 text-silver-300 hover:text-white text-sm uppercase tracking-wider">Home</a>
-                <a href="index.html#services" class="block py-2 text-silver-300 hover:text-white text-sm uppercase tracking-wider">Services</a>
-                <a href="work.html" class="block py-2 text-green-400 text-sm uppercase tracking-wider font-semibold">Work & Credits</a>
-                <a href="beatstore.html" class="block py-2 text-silver-300 hover:text-white text-sm uppercase tracking-wider">Beatstore</a>
-                <a href="index.html#upload" class="block py-2 text-silver-300 hover:text-white text-sm uppercase tracking-wider">Upload Stems</a>
-                <a href="index.html#contact" class="block py-2 text-silver-300 hover:text-white text-sm uppercase tracking-wider">Contact</a>
+            <div id="mobile-menu" class="hidden md:hidden absolute top-20 left-0 right-0 glass-panel border-b border-silver-500/10">
+                <div class="flex flex-col space-y-1 px-4 py-4">
+                    <a href="index.html#home" class="text-silver-300 hover:text-white text-sm uppercase tracking-wider py-2">Home</a>
+                    <a href="index.html#services" class="text-silver-300 hover:text-white text-sm uppercase tracking-wider py-2">Services</a>
+                    <a href="work.html" class="text-green-400 hover:text-green-300 text-sm uppercase tracking-wider font-semibold py-2">Work & Credits</a>
+                    <a href="beatstore.html" class="text-silver-300 hover:text-white text-sm uppercase tracking-wider py-2">Beatstore</a>
+                    <a href="index.html#upload" class="text-silver-300 hover:text-white text-sm uppercase tracking-wider py-2">Upload Stems</a>
+                    <a href="index.html#contact" class="text-silver-300 hover:text-white text-sm uppercase tracking-wider py-2">Contact</a>
+                </div>
             </div>
         </div>
     </nav>
@@ -518,6 +520,14 @@
         const mobileMenu = document.getElementById('mobile-menu');
         mobileMenuBtn.addEventListener('click', () => {
             mobileMenu.classList.toggle('hidden');
+        });
+
+        // Close menu when a link is clicked
+        const mobileMenuLinks = mobileMenu?.querySelectorAll('a');
+        mobileMenuLinks?.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
         });
 
         // Audio Player Logic
