@@ -814,9 +814,24 @@
         }
 
         function seek(event, beatId) {
+            event.preventDefault();
+            event.stopPropagation();
+            
             const audio = audioPlayers[beatId];
-            if (!audio || !audio.duration) {
-                console.warn(`Cannot seek: audio not ready for beat ${beatId}`);
+            if (!audio) {
+                console.warn(`Audio player not initialized for beat ${beatId}`);
+                return;
+            }
+            
+            // Check if audio is ready to be seeked
+            if (audio.readyState < 1) {
+                console.warn(`Audio not ready for beat ${beatId}. ReadyState: ${audio.readyState}, Duration: ${audio.duration}`);
+                alert('Audio is still loading. Please wait a moment and try again.');
+                return;
+            }
+            
+            if (isNaN(audio.duration) || audio.duration === 0) {
+                console.warn(`Invalid duration for beat ${beatId}. Duration: ${audio.duration}`);
                 return;
             }
             
@@ -824,9 +839,17 @@
             const rect = progressBar.getBoundingClientRect();
             const clickX = event.clientX - rect.left;
             const percentage = Math.max(0, Math.min(1, clickX / rect.width));
+            const newTime = percentage * audio.duration;
             
-            console.log(`Seeking beat ${beatId} to ${(percentage * 100).toFixed(0)}%`);
-            audio.currentTime = percentage * audio.duration;
+            console.log(`Seeking beat ${beatId} to ${(percentage * 100).toFixed(0)}% (${formatTime(newTime)})`);
+            
+            try {
+                audio.currentTime = newTime;
+            } catch (error) {
+                console.error(`Error seeking beat ${beatId}:`, error);
+            }
+            
+            return false;
         }
 
         // Setup scrubbing with improved drag support
@@ -839,12 +862,16 @@
                 draggingBeatId = beatCard.getAttribute('data-beat');
                 
                 const audio = audioPlayers[draggingBeatId];
-                if (audio && audio.duration) {
+                if (audio && audio.readyState >= 1 && audio.duration > 0) {
                     const rect = progressBar.getBoundingClientRect();
                     const clickX = e.clientX - rect.left;
                     const percentage = Math.max(0, Math.min(1, clickX / rect.width));
-                    audio.currentTime = percentage * audio.duration;
+                    const newTime = percentage * audio.duration;
+                    console.log(`Mouse down seeking beat ${draggingBeatId} to ${(percentage * 100).toFixed(0)}%`);
+                    audio.currentTime = newTime;
                 }
+                
+                e.preventDefault();
             }
         });
 
@@ -855,12 +882,12 @@
             if (!progressBar) return;
 
             const audio = audioPlayers[draggingBeatId];
-            if (!audio || !audio.duration) return;
+            if (!audio || audio.readyState < 1 || audio.duration <= 0) return;
 
             const rect = progressBar.getBoundingClientRect();
             
             // Check if mouse is over the progress bar
-            if (e.clientX >= rect.left && e.clientX <= rect.right) {
+            if (e.clientX >= rect.left && e.clientX <= rect.right && e.buttons > 0) {
                 const clickX = e.clientX - rect.left;
                 const percentage = Math.max(0, Math.min(1, clickX / rect.width));
                 audio.currentTime = percentage * audio.duration;
@@ -869,7 +896,7 @@
 
         document.addEventListener('mouseup', () => {
             draggingBeatId = null;
-        }, { once: false });
+        });
 
         // Buy Modal Logic
         let currentBeat = null;
