@@ -368,7 +368,7 @@
                 </div>
 
                 <!-- Beat 2 -->
-                <div class="beat-card rounded-2xl overflow-hidden relative fade-in hidden" data-beat="beat2" data-sold="false">
+                <div class="beat-card rounded-2xl overflow-hidden relative fade-in" data-beat="beat2" data-sold="false">
                     <div class="relative h-48 bg-gradient-to-br from-amber-600 to-orange-600">
                         <div class="absolute inset-0 flex items-center justify-center">
                             <div class="waveform-visualizer flex items-end gap-1 h-16 paused" id="viz-beat2">
@@ -399,9 +399,9 @@
                             <span class="meta-tag px-2 py-1 rounded text-silver-300 text-xs">3:45</span>
                         </div>
                         <div class="flex flex-wrap gap-2 mb-4">
-                            <span class="meta-tag px-2 py-1 rounded text-silver-300 text-xs">95 BPM</span>
-                            <span class="meta-tag px-2 py-1 rounded text-silver-300 text-xs">F Major</span>
-                            <span class="px-2 py-1 bg-orange-600/20 rounded text-orange-400 text-xs">Hip-Hop</span>
+                            <span class="meta-tag px-2 py-1 rounded text-silver-300 text-xs">140 BPM</span>
+                            <span class="meta-tag px-2 py-1 rounded text-silver-300 text-xs">F Minor</span>
+                            <span class="px-2 py-1 bg-orange-600/20 rounded text-orange-400 text-xs">140</span>
                         </div>
                         <div class="progress-bar h-1.5 rounded-full mb-4 cursor-pointer" onclick="seek(event, 'beat2')">
                             <div class="progress-fill h-full rounded-full transition-all duration-100" id="progress-beat2" style="width: 0%"></div>
@@ -819,9 +819,40 @@
             
             const rect = event.currentTarget.getBoundingClientRect();
             const clickX = event.clientX - rect.left;
-            const percentage = clickX / rect.width;
+            const percentage = Math.max(0, Math.min(1, clickX / rect.width));
             audio.currentTime = percentage * audio.duration;
         }
+
+        // Setup drag scrubbing for progress bars
+        document.querySelectorAll('.progress-bar').forEach(progressBar => {
+            let isDragging = false;
+
+            progressBar.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                const beatId = e.currentTarget.closest('[data-beat]').getAttribute('data-beat');
+                seek(e, beatId);
+            });
+
+            document.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
+
+                const progressBar = e.target.closest('.progress-bar');
+                if (!progressBar) return;
+
+                const beatId = progressBar.closest('[data-beat]').getAttribute('data-beat');
+                const audio = audioPlayers[beatId];
+                if (!audio || !audio.duration) return;
+
+                const rect = progressBar.getBoundingClientRect();
+                const clickX = e.clientX - rect.left;
+                const percentage = Math.max(0, Math.min(1, clickX / rect.width));
+                audio.currentTime = percentage * audio.duration;
+            });
+
+            document.addEventListener('mouseup', () => {
+                isDragging = false;
+            });
+        });
 
         // Buy Modal Logic
         let currentBeat = null;

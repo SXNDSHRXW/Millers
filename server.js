@@ -51,8 +51,8 @@ const beatFiles = {
         stems: path.join(__dirname, 'Beats', 'MONEY 1_Stems.zip')
     },
     'beat2': {
-        name: 'Golden Era',
-        wav: path.join(__dirname, 'Beats', 'MONEY 1.wav'),
+        name: 'Flutter',
+        wav: path.join(__dirname, 'Beats', 'FLUTTER 1.mp3'),
         stems: path.join(__dirname, 'Beats', 'MONEY 1_Stems.zip')
     },
     'beat3': {

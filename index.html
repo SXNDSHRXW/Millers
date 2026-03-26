@@ -87,9 +87,10 @@
                 </div>
                 
                 <!-- Desktop Menu -->
-                <div class="hidden md:flex space-x-8">
+                <div class="hidden md:flex space-x-8 items-center">
                     <a href="#home" class="text-silver-300 hover:text-white transition-colors text-sm uppercase tracking-wider">Home</a>
                     <a href="#services" class="text-silver-300 hover:text-white transition-colors text-sm uppercase tracking-wider">Services</a>
+                    <a href="work.html" class="text-silver-300 hover:text-white transition-colors text-sm uppercase tracking-wider">My Work</a>
                     <a href="beatstore.html" class="text-silver-300 hover:text-white transition-colors text-sm uppercase tracking-wider">Beatstore</a>
                     <a href="#upload" class="text-green-400 hover:text-green-300 transition-colors text-sm uppercase tracking-wider font-semibold">Upload Stems</a>
                     <a href="#contact" class="text-silver-300 hover:text-white transition-colors text-sm uppercase tracking-wider">Contact</a>
@@ -280,7 +281,7 @@
 
                     <!-- File Upload -->
                     <div>
-                        <label class="block text-silver-300 text-sm font-medium mb-2">Upload Stems <span class="text-red-400">*</span> <span class="text-silver-500 font-normal">(Max 5 files, 10MB each)</span></label>
+                        <label class="block text-silver-300 text-sm font-medium mb-2">Upload Demo <span class="text-silver-500 font-normal">(Optional - Max 10MB )</span></label>
                         <div class="upload-zone rounded-2xl p-8 text-center cursor-pointer" id="drop-zone" onclick="document.getElementById('file-input').click()">
                             <input type="file" id="file-input" name="attachments" multiple 
                                 accept=".wav,.aiff,.flac,.zip,.rar"
@@ -289,7 +290,7 @@
                             <div class="w-16 h-16 rounded-full bg-green-600/20 flex items-center justify-center mx-auto mb-4 text-green-400 text-3xl">↑</div>
                             <p class="text-white font-semibold mb-2">Click to upload or drag and drop</p>
                             <p class="text-silver-500 text-sm">WAV, AIFF, FLAC, ZIP, or RAR files</p>
-                            <p class="text-silver-600 text-xs mt-2">For files larger than 10MB, use WeTransfer and paste the link below</p>
+                            <p class="text-silver-600 text-xs mt-2">For files larger than 10MB, use a seperate file hosting service and paste the link below</p>
                         </div>
                         
                         <div id="file-list" class="mt-4 hidden">
