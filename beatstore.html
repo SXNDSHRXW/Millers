@@ -815,44 +815,61 @@
 
         function seek(event, beatId) {
             const audio = audioPlayers[beatId];
-            if (!audio || !audio.duration) return;
+            if (!audio || !audio.duration) {
+                console.warn(`Cannot seek: audio not ready for beat ${beatId}`);
+                return;
+            }
             
-            const rect = event.currentTarget.getBoundingClientRect();
+            const progressBar = event.currentTarget;
+            const rect = progressBar.getBoundingClientRect();
             const clickX = event.clientX - rect.left;
             const percentage = Math.max(0, Math.min(1, clickX / rect.width));
+            
+            console.log(`Seeking beat ${beatId} to ${(percentage * 100).toFixed(0)}%`);
             audio.currentTime = percentage * audio.duration;
         }
 
-        // Setup drag scrubbing for progress bars
-        document.querySelectorAll('.progress-bar').forEach(progressBar => {
-            let isDragging = false;
+        // Setup scrubbing with improved drag support
+        let draggingBeatId = null;
 
-            progressBar.addEventListener('mousedown', (e) => {
-                isDragging = true;
-                const beatId = e.currentTarget.closest('[data-beat]').getAttribute('data-beat');
-                seek(e, beatId);
-            });
-
-            document.addEventListener('mousemove', (e) => {
-                if (!isDragging) return;
-
+        document.addEventListener('mousedown', (e) => {
+            if (e.target.closest('.progress-bar')) {
                 const progressBar = e.target.closest('.progress-bar');
-                if (!progressBar) return;
+                const beatCard = progressBar.closest('[data-beat]');
+                draggingBeatId = beatCard.getAttribute('data-beat');
+                
+                const audio = audioPlayers[draggingBeatId];
+                if (audio && audio.duration) {
+                    const rect = progressBar.getBoundingClientRect();
+                    const clickX = e.clientX - rect.left;
+                    const percentage = Math.max(0, Math.min(1, clickX / rect.width));
+                    audio.currentTime = percentage * audio.duration;
+                }
+            }
+        });
 
-                const beatId = progressBar.closest('[data-beat]').getAttribute('data-beat');
-                const audio = audioPlayers[beatId];
-                if (!audio || !audio.duration) return;
+        document.addEventListener('mousemove', (e) => {
+            if (!draggingBeatId) return;
 
-                const rect = progressBar.getBoundingClientRect();
+            const progressBar = document.querySelector(`[data-beat="${draggingBeatId}"] .progress-bar`);
+            if (!progressBar) return;
+
+            const audio = audioPlayers[draggingBeatId];
+            if (!audio || !audio.duration) return;
+
+            const rect = progressBar.getBoundingClientRect();
+            
+            // Check if mouse is over the progress bar
+            if (e.clientX >= rect.left && e.clientX <= rect.right) {
                 const clickX = e.clientX - rect.left;
                 const percentage = Math.max(0, Math.min(1, clickX / rect.width));
                 audio.currentTime = percentage * audio.duration;
-            });
-
-            document.addEventListener('mouseup', () => {
-                isDragging = false;
-            });
+            }
         });
+
+        document.addEventListener('mouseup', () => {
+            draggingBeatId = null;
+        }, { once: false });
 
         // Buy Modal Logic
         let currentBeat = null;
