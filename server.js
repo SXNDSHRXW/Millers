@@ -47,7 +47,7 @@ const stripeProducts = {
 const beatFiles = {
     'beat1': {
         name: 'Money',
-        wav: path.join(__dirname, 'Beats', 'MONEY 1.wav'),
+        wav: path.join(__dirname, 'Beats', 'MONEY 1.mp3'),
         stems: path.join(__dirname, 'Beats', 'MONEY 1_Stems.zip')
     },
     'beat2': {
