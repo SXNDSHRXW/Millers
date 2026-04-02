@@ -13,16 +13,6 @@ const app = express();
 // Middleware
 app.use(cors());
 app.use(express.json());
-
-// Redirect to Railway URL
-app.use((req, res, next) => {
-  const host = req.get('host');
-  if (host && !host.includes('millerss.up.railway.app')) {
-    return res.redirect(`https://millerss.up.railway.app${req.originalUrl}`);
-  }
-  next();
-});
-
 app.use(express.static('.'));  // Serve all files from current directory
 app.use(express.static('public'));
 
