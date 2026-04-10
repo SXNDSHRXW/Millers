@@ -47,7 +47,7 @@ const beatFiles = {
     },
     'beat3': {
         name: 'GRIM',
-        wav: path.join(__dirname, 'Beats', 'HIP HOP 3.wav'),
+        wav: path.join(__dirname, 'Beats', 'HIP HOP3.mp3'),
         stems: path.join(__dirname, 'Beats', 'MONEY 1_Stems.zip')
     },
     'beat4': {
