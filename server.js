@@ -46,8 +46,8 @@ const beatFiles = {
         stems: path.join(__dirname, 'Beats', 'MONEY 1_Stems.zip')
     },
     'beat3': {
-        name: 'Smooth Operator',
-        wav: path.join(__dirname, 'Beats', 'MONEY 1.wav'),
+        name: 'GRIM',
+        wav: path.join(__dirname, 'Beats', 'HIP HOP 3.wav'),
         stems: path.join(__dirname, 'Beats', 'MONEY 1_Stems.zip')
     },
     'beat4': {
