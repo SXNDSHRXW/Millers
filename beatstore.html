@@ -953,6 +953,10 @@
                 ? 'http://localhost:3000'
                 : window.location.origin
         );
+        const STRIPE_PAYMENT_LINKS = {
+            wavOnly: 'https://buy.stripe.com/28E9ATf5p49db2vaRU1sQ01',
+            wavWithStems: 'https://buy.stripe.com/dRm28r7CXeNReeH4tw1sQ02'
+        };
 
         function applySoldBeatState(beatId) {
             const beatCard = document.querySelector(`[data-beat="${beatId}"]`);
@@ -982,42 +986,24 @@
                 alert('Please select a beat before checkout.');
                 return;
             }
+            const beatCard = document.querySelector(`[data-beat="${currentBeat}"]`);
+            if (beatCard?.dataset?.sold === 'true') {
+                alert('Sorry, this beat has already been sold.');
+                return;
+            }
             checkoutBtn.disabled = true;
-            checkoutBtn.innerHTML = '<span class="animate-spin">↻</span> Creating checkout...';
+            checkoutBtn.innerHTML = '<span class="animate-spin">↻</span> Redirecting...';
 
             try {
-                const response = await fetch(`${API_URL}/create-checkout-session`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        beatId: currentBeat,
-                        beatName: document.getElementById('modal-beat-name').textContent,
-                        price: currentPrice,
-                        hasStems: currentHasStems
-                    })
-                });
+                const paymentLink = currentHasStems
+                    ? STRIPE_PAYMENT_LINKS.wavWithStems
+                    : STRIPE_PAYMENT_LINKS.wavOnly;
 
-                let data = null;
-                const contentType = response.headers.get('content-type') || '';
-                if (contentType.includes('application/json')) {
-                    data = await response.json();
-                } else {
-                    const rawText = await response.text();
-                    throw new Error(rawText || `Unexpected response format (${response.status})`);
+                if (!paymentLink) {
+                    throw new Error('Payment link is not configured.');
                 }
 
-                if (!response.ok) {
-                    throw new Error(data?.error || data?.message || `Checkout request failed (${response.status})`);
-                }
-
-                if (data.url) {
-                    // Redirect to Stripe Checkout
-                    window.location.href = data.url;
-                } else {
-                    throw new Error('No checkout URL received');
-                }
+                window.location.href = paymentLink;
             } catch (error) {
                 console.error('Checkout error:', error);
                 alert(`Error creating checkout: ${error.message || 'Please try again.'}`);
