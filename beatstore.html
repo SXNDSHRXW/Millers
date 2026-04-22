@@ -904,6 +904,12 @@
         let currentHasStems = false;
 
         function openBuyModal(beatId, beatName, price, hasStems) {
+            const beatCard = document.querySelector(`[data-beat="${beatId}"]`);
+            if (beatCard?.dataset?.sold === 'true') {
+                alert('Sorry, this beat has already been sold.');
+                return;
+            }
+
             currentBeat = beatId;
             currentPrice = price;
             currentHasStems = hasStems;
@@ -938,12 +944,44 @@
             }
         });
 
-        // Backend API URL - Change this to your backend server URL
-        const API_URL = window.location.hostname === 'localhost' ? 'http://localhost:3000' : 'https://millerss.co.uk';
+        // Backend API URL:
+        // - local dev defaults to localhost backend
+        // - live defaults to same-origin (so the deployed API can sit behind the same domain)
+        // - optional override via window.BEATSTORE_API_URL before this script runs
+        const API_URL = window.BEATSTORE_API_URL || (
+            window.location.hostname === 'localhost'
+                ? 'http://localhost:3000'
+                : window.location.origin
+        );
+
+        function applySoldBeatState(beatId) {
+            const beatCard = document.querySelector(`[data-beat="${beatId}"]`);
+            if (!beatCard) return;
+            beatCard.dataset.sold = 'true';
+            beatCard.classList.add('sold');
+        }
+
+        async function syncSoldBeatsFromServer() {
+            try {
+                const response = await fetch(`${API_URL}/sold-beats`);
+                if (!response.ok) return;
+                const data = await response.json();
+                const soldIds = Array.isArray(data?.soldBeats) ? data.soldBeats : [];
+                soldIds.forEach(applySoldBeatState);
+            } catch (error) {
+                console.error('Failed to sync sold beats:', error);
+            }
+        }
+
+        syncSoldBeatsFromServer();
 
         // Stripe Checkout - calls backend to create session
         async function processCheckout() {
             const checkoutBtn = document.getElementById('checkout-btn');
+            if (!currentBeat || !currentPrice) {
+                alert('Please select a beat before checkout.');
+                return;
+            }
             checkoutBtn.disabled = true;
             checkoutBtn.innerHTML = '<span class="animate-spin">↻</span> Creating checkout...';
 
@@ -961,7 +999,18 @@
                     })
                 });
 
-                const data = await response.json();
+                let data = null;
+                const contentType = response.headers.get('content-type') || '';
+                if (contentType.includes('application/json')) {
+                    data = await response.json();
+                } else {
+                    const rawText = await response.text();
+                    throw new Error(rawText || `Unexpected response format (${response.status})`);
+                }
+
+                if (!response.ok) {
+                    throw new Error(data?.error || data?.message || `Checkout request failed (${response.status})`);
+                }
 
                 if (data.url) {
                     // Redirect to Stripe Checkout
@@ -971,7 +1020,7 @@
                 }
             } catch (error) {
                 console.error('Checkout error:', error);
-                alert('Error creating checkout. Please try again.');
+                alert(`Error creating checkout: ${error.message || 'Please try again.'}`);
                 checkoutBtn.disabled = false;
                 checkoutBtn.innerHTML = `<span>Proceed to Checkout</span><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>`;
             }

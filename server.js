@@ -25,12 +25,60 @@ const transporter = nodemailer.createTransport({
     }
 });
 
-// Stripe Product Configuration
-// These are your Stripe product IDs - update with your actual price IDs from Stripe dashboard
-const stripeProducts = {
-    wavOnly: process.env.STRIPE_PRICE_WAV_ONLY || 'price_YOUR_WAV_ONLY_PRICE_ID',  // Replace with actual price ID
-    wavWithStems: process.env.STRIPE_PRICE_WAV_STEMS || 'price_YOUR_WAV_STEMS_PRICE_ID'  // Replace with actual price ID
+// Server-trusted beat catalog and prices (in pence).
+// Never trust price/name from the browser.
+const beatCatalog = {
+    beat1: { name: 'Money', wavOnly: 7500, wavWithStems: 15000 },
+    beat2: { name: 'Flutter', wavOnly: 7500, wavWithStems: 15000 },
+    beat3: { name: 'GRIM', wavOnly: 7500, wavWithStems: 15000 },
+    beat4: { name: 'UK Drill', wavOnly: 7500, wavWithStems: 15000 },
+    beat5: { name: 'Lagos Vibes', wavOnly: 7500, wavWithStems: 15000 },
+    beat6: { name: 'Ocean Waves', wavOnly: 7500, wavWithStems: 15000 }
 };
+
+const soldBeatsFilePath = path.join(__dirname, 'sold-beats.json');
+let soldBeats = new Set();
+
+function loadSoldBeats() {
+    try {
+        if (!fs.existsSync(soldBeatsFilePath)) {
+            fs.writeFileSync(soldBeatsFilePath, JSON.stringify({ soldBeats: [] }, null, 2));
+            soldBeats = new Set();
+            return;
+        }
+
+        const fileContent = fs.readFileSync(soldBeatsFilePath, 'utf8');
+        const parsed = JSON.parse(fileContent);
+        const soldList = Array.isArray(parsed?.soldBeats) ? parsed.soldBeats : [];
+        soldBeats = new Set(soldList);
+    } catch (error) {
+        console.error('Failed to load sold beats file:', error);
+        soldBeats = new Set();
+    }
+}
+
+function saveSoldBeats() {
+    try {
+        fs.writeFileSync(
+            soldBeatsFilePath,
+            JSON.stringify({ soldBeats: Array.from(soldBeats) }, null, 2)
+        );
+    } catch (error) {
+        console.error('Failed to save sold beats file:', error);
+    }
+}
+
+function markBeatAsSold(beatId) {
+    if (!beatId) return;
+    soldBeats.add(beatId);
+    saveSoldBeats();
+}
+
+function isBeatSold(beatId) {
+    return soldBeats.has(beatId);
+}
+
+loadSoldBeats();
 
 // Beat files configuration
 // Store your beat files in a secure location (AWS S3, Google Cloud Storage, or local)
@@ -70,28 +118,44 @@ const beatFiles = {
 // Create Stripe Checkout Session
 app.post('/create-checkout-session', async (req, res) => {
     try {
-        const { beatId, beatName, hasStems, customerEmail } = req.body;
+        const { beatId, hasStems, customerEmail } = req.body;
+        const beat = beatCatalog[beatId];
+        const includesStems = hasStems === true || hasStems === 'true' || hasStems === 1 || hasStems === '1';
 
-        // Select the correct price ID based on product type
-        const priceId = hasStems ? stripeProducts.wavWithStems : stripeProducts.wavOnly;
+        if (!beat) {
+            return res.status(400).json({ error: 'Invalid beat selected.' });
+        }
+        if (isBeatSold(beatId)) {
+            return res.status(409).json({ error: 'This beat has already been sold.' });
+        }
 
-        // Create line items using Stripe product prices
-        const lineItems = [{
-            price: priceId,
-            quantity: 1,
-        }];
+        const unitAmount = includesStems ? beat.wavWithStems : beat.wavOnly;
+        const packageLabel = includesStems ? 'WAV + Stems' : 'WAV Only';
+        const frontendUrl = process.env.FRONTEND_URL || `${req.protocol}://${req.get('host')}`;
 
         const session = await stripe.checkout.sessions.create({
             payment_method_types: ['card'],
-            line_items: lineItems,
+            line_items: [
+                {
+                    quantity: 1,
+                    price_data: {
+                        currency: 'gbp',
+                        unit_amount: unitAmount,
+                        product_data: {
+                            name: `${beat.name} (${packageLabel})`
+                        }
+                    }
+                }
+            ],
             mode: 'payment',
-            success_url: `${process.env.FRONTEND_URL}/success.html?session_id={CHECKOUT_SESSION_ID}`,
-            cancel_url: `${process.env.FRONTEND_URL}/beatstore.html`,
+            success_url: `${frontendUrl}/success.html?session_id={CHECKOUT_SESSION_ID}`,
+            cancel_url: `${frontendUrl}/beatstore.html`,
             customer_email: customerEmail,
             metadata: {
                 beatId: beatId,
-                beatName: beatName,
-                hasStems: hasStems.toString()
+                beatName: beat.name,
+                hasStems: includesStems.toString(),
+                packageLabel
             }
         });
 
@@ -124,6 +188,11 @@ app.post('/webhook', express.raw({ type: 'application/json' }), async (req, res)
         const beatName = session.metadata.beatName;
         const hasStems = session.metadata.hasStems === 'true';
         const customerEmail = session.customer_email || session.customer_details?.email;
+
+        // Exclusive lock: once paid, mark beat as sold.
+        if (beatId) {
+            markBeatAsSold(beatId);
+        }
 
         if (customerEmail && beatId) {
             await sendBeatFiles(customerEmail, beatId, beatName, hasStems);
@@ -275,6 +344,11 @@ app.get('/verify-session', async (req, res) => {
         console.error('Error verifying session:', error);
         res.status(500).json({ error: error.message });
     }
+});
+
+// Public endpoint for storefront to hide/disable sold exclusive beats
+app.get('/sold-beats', (req, res) => {
+    res.json({ soldBeats: Array.from(soldBeats) });
 });
 
 const PORT = process.env.PORT || 3000;
