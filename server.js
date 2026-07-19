@@ -7,6 +7,8 @@ const path = require('path');
 const https = require('https');
 const http = require('http');
 require('dotenv').config();
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
 
 const app = express();
 
@@ -15,6 +17,34 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static('.'));  // Serve all files from current directory
 app.use(express.static('public'));
+
+// Security headers
+app.use(helmet({
+    contentSecurityPolicy: {
+        directives: {
+            defaultSrc: ["'self'"],
+            scriptSrc: ["'self'", "'unsafe-inline'", "https://cdn.tailwindcss.com", "https://cdnjs.cloudflare.com", "https://js.stripe.com", "https://cdn.jsdelivr.net"],
+            styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+            fontSrc: ["'self'", "https://fonts.gstatic.com"],
+            imgSrc: ["'self'", "data:", "https:"],
+            connectSrc: ["'self'", "https://api.stripe.com"],
+            frameSrc: ["'self'", "https://js.stripe.com", "https://hooks.stripe.com"]
+        }
+    }
+}));
+
+// Rate limiting for sensitive endpoints
+const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100, // limit each IP to 100 requests per windowMs
+    standardHeaders: true,
+    legacyHeaders: false,
+    message: 'Too many requests, please try again later.'
+});
+
+// Apply limiter to checkout and webhook endpoints
+app.use('/create-checkout-session', limiter);
+app.use('/webhook', limiter);
 
 // Email configuration (using Gmail as example - you can use SendGrid, AWS SES, etc.)
 const transporter = nodemailer.createTransport({

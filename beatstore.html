@@ -19,6 +19,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
+    <!-- Global Styles -->
+    <link rel="stylesheet" href="styles/global.css">
     
     <script>
         tailwind.config = {
@@ -46,6 +48,7 @@
         .font-display { font-family: 'Space Grotesk', sans-serif; }
         .glass-panel {
             background: rgba(30, 41, 59, 0.4);
+            -webkit-backdrop-filter: blur(12px);
             backdrop-filter: blur(12px);
             border: 1px solid rgba(148, 163, 184, 0.1);
         }
@@ -158,6 +161,7 @@
         /* Modal Styles */
         .modal-overlay {
             background: rgba(0, 0, 0, 0.8);
+            -webkit-backdrop-filter: blur(8px);
             backdrop-filter: blur(8px);
         }
         .modal-content {
@@ -185,39 +189,46 @@
 </head>
 <body class="antialiased overflow-x-hidden">
 
-    <!-- Navigation -->
-    <nav class="fixed w-full z-50 glass-panel border-b border-silver-500/10">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-20">
-                <a href="index.html" class="flex items-center space-x-3">
-                    <div class="w-10 h-10 rounded-full bg-gradient-to-br from-silver-300 to-silver-500 flex items-center justify-center text-midnight-900 font-bold text-xl">M</div>
-                    <span class="font-display font-bold text-2xl silver-gradient tracking-wider">MILLERS</span>
-                </a>
-                <div class="hidden md:flex space-x-8">
-                    <a href="index.html#home" class="text-silver-300 hover:text-white transition-colors text-sm uppercase tracking-wider">Home</a>
-                    <a href="index.html#services" class="text-silver-300 hover:text-white transition-colors text-sm uppercase tracking-wider">Services</a>
-                    <a href="work.html" class="text-silver-300 hover:text-white transition-colors text-sm uppercase tracking-wider">Work & Credits</a>
-                    <a href="beatstore.html" class="text-purple-400 hover:text-purple-300 transition-colors text-sm uppercase tracking-wider font-semibold">Beatstore</a>
-                    <a href="index.html#upload" class="text-silver-300 hover:text-white transition-colors text-sm uppercase tracking-wider">Upload Stems</a>
-                    <a href="index.html#contact" class="text-silver-300 hover:text-white transition-colors text-sm uppercase tracking-wider">Contact</a>
-                </div>
-                <!-- Mobile Menu Button -->
-                <button id="mobile-menu-btn" class="md:hidden text-white p-2">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-                    </svg>
-                </button>
+    <!-- Ambient Background Layers (Global) -->
+    <div class="ambient-bg" aria-hidden="true">
+        <canvas id="particle-canvas"></canvas>
+        <div class="gradient-mesh"></div>
+        <div class="depth-layer-1"></div>
+        <div class="depth-layer-2"></div>
+    </div>
+
+    <!-- Floating Navigation Island -->
+    <nav class="nav-island" role="navigation" aria-label="Main navigation">
+        <div class="nav-progress" aria-hidden="true"></div>
+        <div class="flex items-center gap-6">
+            <a href="index.html" class="flex items-center gap-3 flex-shrink-0" aria-label="MILLERS Home">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-silver-300 to-silver-500 flex items-center justify-center text-midnight-900 font-bold text-xl">M</div>
+                <span class="font-display font-bold text-xl silver-gradient tracking-wider hidden sm:block">MILLERS</span>
+            </a>
+            
+            <div class="nav-links flex items-center gap-1 hidden md:flex">
+                <a href="index.html#home" class="nav-link px-4 py-2 text-sm font-semibold text-silver-300 hover:text-white transition-colors rounded-full" data-magnetic>Home</a>
+                <a href="index.html#services" class="nav-link px-4 py-2 text-sm font-semibold text-silver-300 hover:text-white transition-colors rounded-full" data-magnetic>Services</a>
+                <a href="work.html" class="nav-link px-4 py-2 text-sm font-semibold text-silver-300 hover:text-white transition-colors rounded-full" data-magnetic>Work</a>
+                <a href="beatstore.html" class="nav-link px-4 py-2 text-sm font-semibold text-purple-400 hover:text-purple-300 transition-colors rounded-full" data-magnetic>Beatstore</a>
+                <a href="index.html#upload" class="nav-link px-4 py-2 text-sm font-semibold text-green-400 hover:text-green-300 transition-colors rounded-full" data-magnetic>Upload Stems</a>
+                <a href="index.html#contact" class="nav-link px-4 py-2 text-sm font-semibold text-silver-300 hover:text-white transition-colors rounded-full" data-magnetic>Contact</a>
             </div>
-            <!-- Mobile Menu -->
-            <div id="mobile-menu" class="hidden md:hidden absolute top-20 left-0 right-0 glass-panel border-b border-silver-500/10">
-                <div class="flex flex-col space-y-1 px-4 py-4">
-                    <a href="index.html#home" class="text-silver-300 hover:text-white text-sm uppercase tracking-wider py-2">Home</a>
-                    <a href="index.html#services" class="text-silver-300 hover:text-white text-sm uppercase tracking-wider py-2">Services</a>
-                    <a href="work.html" class="text-silver-300 hover:text-white text-sm uppercase tracking-wider py-2">Work & Credits</a>
-                    <a href="beatstore.html" class="text-purple-400 text-sm uppercase tracking-wider font-semibold py-2">Beatstore</a>
-                    <a href="index.html#upload" class="text-silver-300 hover:text-white text-sm uppercase tracking-wider py-2">Upload Stems</a>
-                    <a href="index.html#contact" class="text-silver-300 hover:text-white text-sm uppercase tracking-wider py-2">Contact</a>
-                </div>
+            
+            <button id="mobile-menu-btn" class="md:hidden text-white p-2" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobile-menu">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+            </button>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden absolute top-full left-4 right-4 mt-2 glass-panel rounded-2xl p-4 border-b border-silver-500/10" role="dialog" aria-label="Mobile menu">
+            <div class="flex flex-col space-y-1">
+                <a href="index.html#home" class="mobile-nav-link px-4 py-3 text-sm font-semibold text-silver-300 hover:text-white transition-colors rounded-xl">Home</a>
+                <a href="index.html#services" class="mobile-nav-link px-4 py-3 text-sm font-semibold text-silver-300 hover:text-white transition-colors rounded-xl">Services</a>
+                <a href="work.html" class="mobile-nav-link px-4 py-3 text-sm font-semibold text-silver-300 hover:text-white transition-colors rounded-xl">Work</a>
+                <a href="beatstore.html" class="mobile-nav-link px-4 py-3 text-sm font-semibold text-purple-400 hover:text-purple-300 transition-colors rounded-xl">Beatstore</a>
+                <a href="index.html#upload" class="mobile-nav-link px-4 py-3 text-sm font-semibold text-green-400 hover:text-green-300 transition-colors rounded-xl">Upload Stems</a>
+                <a href="index.html#contact" class="mobile-nav-link px-4 py-3 text-sm font-semibold text-silver-300 hover:text-white transition-colors rounded-xl">Contact</a>
             </div>
         </div>
     </nav>
@@ -233,18 +244,20 @@
             <div class="inline-flex items-center gap-2 px-4 py-2 bg-purple-600/20 rounded-full text-purple-400 text-sm font-semibold mb-6 fade-in">
                 <span>Exclusive License</span>
             </div>
-            <h1 class="font-display font-bold text-5xl md:text-7xl lg:text-8xl mb-6 leading-none tracking-tighter fade-in" style="transition-delay: 0.1s">
+            <h1 class="font-display font-bold text-5xl md:text-7xl lg:text-8xl mb-6 leading-none tracking-tighter fade-in fade-in-delay-1">
                 <span class="silver-gradient">Beatstore</span>
             </h1>
-            <p class="text-silver-400 text-lg md:text-xl max-w-2xl mx-auto mb-8 font-light fade-in" style="transition-delay: 0.2s">
+            <p class="text-silver-400 text-lg md:text-xl max-w-2xl mx-auto mb-8 font-light fade-in fade-in-delay-2">
                 Exclusive beats sold only once. Each purchase includes full ownership rights and stems (optional).
             </p>
             
             <!-- Exclusive Notice -->
-            <div class="inline-flex items-center gap-3 px-6 py-3 bg-amber-500/20 rounded-xl border border-amber-500/30 fade-in" style="transition-delay: 0.3s">
+            <div class="inline-flex items-center gap-3 px-6 py-3 bg-amber-500/20 rounded-xl border border-amber-500/30 fade-in fade-in-delay-3">
                 <div class="exclusive-badge w-3 h-3 rounded-full"></div>
                 <span class="text-amber-400 text-sm font-semibold">All beats are EXCLUSIVE - Sold only once per customer</span>
             </div>
+            <!-- Waveform Hero (simulated, audio-reactive) -->
+            <canvas id="waveform-hero" class="waveform-hero mt-8 mx-auto fade-in" role="img" aria-hidden="true"></canvas>
         </div>
     </section>
 
@@ -306,9 +319,10 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="beats-grid">
                 
                 <!-- Beat 1 -->
-                <div class="beat-card rounded-2xl overflow-hidden relative fade-in" data-beat="beat1" data-sold="false">
+                <div class="beat-card rounded-2xl overflow-hidden relative fade-in" data-beat="beat1" data-bpm="95" data-sold="false" tabindex="0">
                     <!-- Album Art -->
                     <div class="relative h-48 bg-gradient-to-br from-purple-600 to-blue-600">
+                        <div class="holo-sheen" aria-hidden="true"></div>
                         <div class="absolute inset-0 flex items-center justify-center">
                             <div class="waveform-visualizer flex items-end gap-1 h-16 paused" id="viz-beat1">
                                 <div class="waveform-bar w-1.5 rounded-full bg-white/80"></div>
@@ -321,7 +335,7 @@
                             </div>
                         </div>
                         <!-- Play Button Overlay -->
-                        <button class="play-btn absolute bottom-4 right-4 w-12 h-12 rounded-full flex items-center justify-center text-white transition-all" onclick="togglePlay('beat1', '/preview/beat1')" title="Play Money! beat">
+                        <button class="play-btn absolute bottom-4 right-4 w-12 h-12 rounded-full flex items-center justify-center text-white transition-all" onclick="togglePlay('beat1', '/preview/beat1')" title="Play Money beat" aria-pressed="false" aria-label="Play Money beat">
                             <svg class="w-5 h-5 play-icon" fill="currentColor" viewBox="0 0 24 24">
                                 <path d="M8 5v14l11-7z"/>
                             </svg>
@@ -349,17 +363,17 @@
                         </div>
                         
                         <!-- Progress Bar -->
-                        <div class="progress-bar h-1.5 rounded-full mb-4 cursor-pointer" onclick="seek(event, 'beat1')">
-                            <div class="progress-fill h-full rounded-full transition-all duration-100" id="progress-beat1" style="width: 0%"></div>
+                        <div class="progress-bar h-1.5 rounded-full mb-4 cursor-pointer" onclick="seek(event, 'beat1')" role="button" tabindex="0" aria-label="Seek playback position for Money">
+                            <div class="progress-fill h-full rounded-full transition-all duration-100" id="progress-beat1"></div>
                         </div>
                         
                         <!-- Price Options -->
                         <div class="space-y-2">
-                            <button onclick="openBuyModal('beat1', 'Money', 75, false)" class="buy-btn w-full py-3 rounded-xl text-white font-semibold text-sm flex items-center justify-between px-4 transition-all">
+                            <button onclick="openBuyModal('beat1', 'Money', 75, false)" class="buy-btn w-full py-3 rounded-xl text-white font-semibold text-sm flex items-center justify-between px-4 transition-all" aria-label="Buy Money WAV only for £75">
                                 <span>Buy WAV Only</span>
                                 <span class="price-tag px-3 py-1 rounded-lg">£75</span>
                             </button>
-                            <button onclick="openBuyModal('beat1', 'Money', 150, true)" class="buy-btn w-full py-3 rounded-xl text-white font-semibold text-sm flex items-center justify-between px-4 transition-all">
+                            <button onclick="openBuyModal('beat1', 'Money', 150, true)" class="buy-btn w-full py-3 rounded-xl text-white font-semibold text-sm flex items-center justify-between px-4 transition-all" aria-label="Buy Money WAV and stems for £150">
                                 <span>Buy WAV + Stems</span>
                                 <span class="price-tag stems px-3 py-1 rounded-lg">£150</span>
                             </button>
@@ -368,7 +382,8 @@
                 </div>
 
                 <!-- Beat 2 -->
-                <div class="beat-card rounded-2xl overflow-hidden relative fade-in" data-beat="beat2" data-sold="false">
+                <div class="beat-card rounded-2xl overflow-hidden relative fade-in" data-beat="beat2" data-bpm="140" data-sold="false" tabindex="0">
+                    <div class="holo-sheen" aria-hidden="true"></div>
                     <div class="relative h-48 bg-gradient-to-br from-amber-600 to-orange-600">
                         <div class="absolute inset-0 flex items-center justify-center">
                             <div class="waveform-visualizer flex items-end gap-1 h-16 paused" id="viz-beat2">
@@ -381,7 +396,7 @@
                                 <div class="waveform-bar w-1.5 rounded-full bg-white/80"></div>
                             </div>
                         </div>
-                        <button class="play-btn absolute bottom-4 right-4 w-12 h-12 rounded-full flex items-center justify-center text-white transition-all" onclick="togglePlay('beat2', '/preview/beat2')" title="Play Golden Era beat">
+                        <button class="play-btn absolute bottom-4 right-4 w-12 h-12 rounded-full flex items-center justify-center text-white transition-all" onclick="togglePlay('beat2', '/preview/beat2')" title="Play Flutter beat" aria-pressed="false" aria-label="Play Flutter beat">
                             <svg class="w-5 h-5 play-icon" fill="currentColor" viewBox="0 0 24 24">
                                 <path d="M8 5v14l11-7z"/>
                             </svg>
@@ -403,15 +418,15 @@
                             <span class="meta-tag px-2 py-1 rounded text-silver-300 text-xs">F Minor</span>
                             <span class="px-2 py-1 bg-orange-600/20 rounded text-orange-400 text-xs">140</span>
                         </div>
-                        <div class="progress-bar h-1.5 rounded-full mb-4 cursor-pointer" onclick="seek(event, 'beat2')">
-                            <div class="progress-fill h-full rounded-full transition-all duration-100" id="progress-beat2" style="width: 0%"></div>
+                        <div class="progress-bar h-1.5 rounded-full mb-4 cursor-pointer" onclick="seek(event, 'beat2')" role="button" tabindex="0" aria-label="Seek playback position for Flutter">
+                            <div class="progress-fill h-full rounded-full transition-all duration-100" id="progress-beat2"></div>
                         </div>
                         <div class="space-y-2">
-                            <button onclick="openBuyModal('beat2', 'Flutter', 75, false)" class="buy-btn w-full py-3 rounded-xl text-white font-semibold text-sm flex items-center justify-between px-4 transition-all">
+                            <button onclick="openBuyModal('beat2', 'Flutter', 75, false)" class="buy-btn w-full py-3 rounded-xl text-white font-semibold text-sm flex items-center justify-between px-4 transition-all" aria-label="Buy Flutter WAV only for £75">
                                 <span>Buy WAV Only</span>
                                 <span class="price-tag px-3 py-1 rounded-lg">£75</span>
                             </button>
-                            <button onclick="openBuyModal('beat2', 'Flutter', 150, true)" class="buy-btn w-full py-3 rounded-xl text-white font-semibold text-sm flex items-center justify-between px-4 transition-all">
+                            <button onclick="openBuyModal('beat2', 'Flutter', 150, true)" class="buy-btn w-full py-3 rounded-xl text-white font-semibold text-sm flex items-center justify-between px-4 transition-all" aria-label="Buy Flutter WAV and stems for £150">
                                 <span>Buy WAV + Stems</span>
                                 <span class="price-tag stems px-3 py-1 rounded-lg">£150</span>
                             </button>
@@ -420,7 +435,8 @@
                 </div>
 
                 <!-- Beat 3 -->
-                <div class="beat-card rounded-2xl overflow-hidden relative fade-in" data-beat="beat3" data-sold="false">
+                <div class="beat-card rounded-2xl overflow-hidden relative fade-in" data-beat="beat3" data-bpm="92" data-sold="false" tabindex="0">
+                    <div class="holo-sheen" aria-hidden="true"></div>
                     <div class="relative h-48 bg-gradient-to-br from-blue-600 to-cyan-600">
                         <div class="absolute inset-0 flex items-center justify-center">
                             <div class="waveform-visualizer flex items-end gap-1 h-16 paused" id="viz-beat3">
@@ -433,7 +449,7 @@
                                 <div class="waveform-bar w-1.5 rounded-full bg-white/80"></div>
                             </div>
                         </div>
-                        <button class="play-btn absolute bottom-4 right-4 w-12 h-12 rounded-full flex items-center justify-center text-white transition-all" onclick="togglePlay('beat3', '/preview/beat3')" title="Play GRIM beat">
+                        <button class="play-btn absolute bottom-4 right-4 w-12 h-12 rounded-full flex items-center justify-center text-white transition-all" onclick="togglePlay('beat3', '/preview/beat3')" title="Play GRIM beat" aria-pressed="false" aria-label="Play GRIM beat">
                             <svg class="w-5 h-5 play-icon" fill="currentColor" viewBox="0 0 24 24">
                                 <path d="M8 5v14l11-7z"/>
                             </svg>
@@ -455,15 +471,15 @@
                             <span class="meta-tag px-2 py-1 rounded text-silver-300 text-xs">A Minor</span>
                             <span class="px-2 py-1 bg-orange-600/20 rounded text-orange-400 text-xs">Hip Hop</span>
                         </div>
-                        <div class="progress-bar h-1.5 rounded-full mb-4 cursor-pointer" onclick="seek(event, 'beat3')">
-                            <div class="progress-fill h-full rounded-full transition-all duration-100" id="progress-beat3" style="width: 0%"></div>
+                        <div class="progress-bar h-1.5 rounded-full mb-4 cursor-pointer" onclick="seek(event, 'beat3')" role="button" tabindex="0" aria-label="Seek playback position for GRIM">
+                            <div class="progress-fill h-full rounded-full transition-all duration-100" id="progress-beat3"></div>
                         </div>
                         <div class="space-y-2">
-                            <button onclick="openBuyModal('beat3', 'GRIM', 75, false)" class="buy-btn w-full py-3 rounded-xl text-white font-semibold text-sm flex items-center justify-between px-4 transition-all">
+                            <button onclick="openBuyModal('beat3', 'GRIM', 75, false)" class="buy-btn w-full py-3 rounded-xl text-white font-semibold text-sm flex items-center justify-between px-4 transition-all" aria-label="Buy GRIM WAV only for £75">
                                 <span>Buy WAV Only</span>
                                 <span class="price-tag px-3 py-1 rounded-lg">£75</span>
                             </button>
-                            <button onclick="openBuyModal('beat3', 'GRIM', 150, true)" class="buy-btn w-full py-3 rounded-xl text-white font-semibold text-sm flex items-center justify-between px-4 transition-all">
+                            <button onclick="openBuyModal('beat3', 'GRIM', 150, true)" class="buy-btn w-full py-3 rounded-xl text-white font-semibold text-sm flex items-center justify-between px-4 transition-all" aria-label="Buy GRIM WAV and stems for £150">
                                 <span>Buy WAV + Stems</span>
                                 <span class="price-tag stems px-3 py-1 rounded-lg">£150</span>
                             </button>
@@ -472,7 +488,8 @@
                 </div>
 
                 <!-- Beat 4 -->
-                <div class="beat-card rounded-2xl overflow-hidden relative fade-in hidden" data-beat="beat4" data-sold="false">
+                <div class="beat-card rounded-2xl overflow-hidden relative fade-in hidden" data-beat="beat4" data-bpm="155" data-sold="false" tabindex="0">
+                    <div class="holo-sheen" aria-hidden="true"></div>
                     <div class="relative h-48 bg-gradient-to-br from-red-700 to-pink-600">
                         <div class="absolute inset-0 flex items-center justify-center">
                             <div class="waveform-visualizer flex items-end gap-1 h-16 paused" id="viz-beat4">
@@ -485,7 +502,7 @@
                                 <div class="waveform-bar w-1.5 rounded-full bg-white/80"></div>
                             </div>
                         </div>
-                        <button class="play-btn absolute bottom-4 right-4 w-12 h-12 rounded-full flex items-center justify-center text-white transition-all" onclick="togglePlay('beat4', '/preview/beat4')" title="Play UK Drill beat">
+                        <button class="play-btn absolute bottom-4 right-4 w-12 h-12 rounded-full flex items-center justify-center text-white transition-all" onclick="togglePlay('beat4', '/preview/beat4')" title="Play UK Drill beat" aria-pressed="false" aria-label="Play UK Drill beat">
                             <svg class="w-5 h-5 play-icon" fill="currentColor" viewBox="0 0 24 24">
                                 <path d="M8 5v14l11-7z"/>
                             </svg>
@@ -507,15 +524,15 @@
                             <span class="meta-tag px-2 py-1 rounded text-silver-300 text-xs">A Minor</span>
                             <span class="px-2 py-1 bg-red-600/20 rounded text-red-400 text-xs">Drill</span>
                         </div>
-                        <div class="progress-bar h-1.5 rounded-full mb-4 cursor-pointer" onclick="seek(event, 'beat4')">
-                            <div class="progress-fill h-full rounded-full transition-all duration-100" id="progress-beat4" style="width: 0%"></div>
+                        <div class="progress-bar h-1.5 rounded-full mb-4 cursor-pointer" onclick="seek(event, 'beat4')" role="button" tabindex="0" aria-label="Seek playback position for UK Drill">
+                            <div class="progress-fill h-full rounded-full transition-all duration-100" id="progress-beat4"></div>
                         </div>
                         <div class="space-y-2">
-                            <button onclick="openBuyModal('beat4', 'UK Drill', 75, false)" class="buy-btn w-full py-3 rounded-xl text-white font-semibold text-sm flex items-center justify-between px-4 transition-all">
+                            <button onclick="openBuyModal('beat4', 'UK Drill', 75, false)" class="buy-btn w-full py-3 rounded-xl text-white font-semibold text-sm flex items-center justify-between px-4 transition-all" aria-label="Buy UK Drill WAV only for £75">
                                 <span>Buy WAV Only</span>
                                 <span class="price-tag px-3 py-1 rounded-lg">£75</span>
                             </button>
-                            <button onclick="openBuyModal('beat4', 'UK Drill', 150, true)" class="buy-btn w-full py-3 rounded-xl text-white font-semibold text-sm flex items-center justify-between px-4 transition-all">
+                            <button onclick="openBuyModal('beat4', 'UK Drill', 150, true)" class="buy-btn w-full py-3 rounded-xl text-white font-semibold text-sm flex items-center justify-between px-4 transition-all" aria-label="Buy UK Drill WAV and stems for £150">
                                 <span>Buy WAV + Stems</span>
                                 <span class="price-tag stems px-3 py-1 rounded-lg">£150</span>
                             </button>
@@ -524,7 +541,8 @@
                 </div>
 
                 <!-- Beat 5 -->
-                <div class="beat-card rounded-2xl overflow-hidden relative fade-in hidden" data-beat="beat5" data-sold="false">
+                <div class="beat-card rounded-2xl overflow-hidden relative fade-in hidden" data-beat="beat5" data-bpm="112" data-sold="false" tabindex="0">
+                    <div class="holo-sheen" aria-hidden="true"></div>
                     <div class="relative h-48 bg-gradient-to-br from-green-600 to-emerald-600">
                         <div class="absolute inset-0 flex items-center justify-center">
                             <div class="waveform-visualizer flex items-end gap-1 h-16 paused" id="viz-beat5">
@@ -537,7 +555,7 @@
                                 <div class="waveform-bar w-1.5 rounded-full bg-white/80"></div>
                             </div>
                         </div>
-                        <button class="play-btn absolute bottom-4 right-4 w-12 h-12 rounded-full flex items-center justify-center text-white transition-all" onclick="togglePlay('beat5', '/preview/beat5')" title="Play Lagos Vibes beat">
+                        <button class="play-btn absolute bottom-4 right-4 w-12 h-12 rounded-full flex items-center justify-center text-white transition-all" onclick="togglePlay('beat5', '/preview/beat5')" title="Play Lagos Vibes beat" aria-pressed="false" aria-label="Play Lagos Vibes beat">
                             <svg class="w-5 h-5 play-icon" fill="currentColor" viewBox="0 0 24 24">
                                 <path d="M8 5v14l11-7z"/>
                             </svg>
@@ -559,15 +577,15 @@
                             <span class="meta-tag px-2 py-1 rounded text-silver-300 text-xs">D Major</span>
                             <span class="px-2 py-1 bg-green-600/20 rounded text-green-400 text-xs">Afrobeat</span>
                         </div>
-                        <div class="progress-bar h-1.5 rounded-full mb-4 cursor-pointer" onclick="seek(event, 'beat5')">
-                            <div class="progress-fill h-full rounded-full transition-all duration-100" id="progress-beat5" style="width: 0%"></div>
+                        <div class="progress-bar h-1.5 rounded-full mb-4 cursor-pointer" onclick="seek(event, 'beat5')" role="button" tabindex="0" aria-label="Seek playback position for Lagos Vibes">
+                            <div class="progress-fill h-full rounded-full transition-all duration-100" id="progress-beat5"></div>
                         </div>
                         <div class="space-y-2">
-                            <button onclick="openBuyModal('beat5', 'Lagos Vibes', 75, false)" class="buy-btn w-full py-3 rounded-xl text-white font-semibold text-sm flex items-center justify-between px-4 transition-all">
+                            <button onclick="openBuyModal('beat5', 'Lagos Vibes', 75, false)" class="buy-btn w-full py-3 rounded-xl text-white font-semibold text-sm flex items-center justify-between px-4 transition-all" aria-label="Buy Lagos Vibes WAV only for £75">
                                 <span>Buy WAV Only</span>
                                 <span class="price-tag px-3 py-1 rounded-lg">£75</span>
                             </button>
-                            <button onclick="openBuyModal('beat5', 'Lagos Vibes', 150, true)" class="buy-btn w-full py-3 rounded-xl text-white font-semibold text-sm flex items-center justify-between px-4 transition-all">
+                            <button onclick="openBuyModal('beat5', 'Lagos Vibes', 150, true)" class="buy-btn w-full py-3 rounded-xl text-white font-semibold text-sm flex items-center justify-between px-4 transition-all" aria-label="Buy Lagos Vibes WAV and stems for £150">
                                 <span>Buy WAV + Stems</span>
                                 <span class="price-tag stems px-3 py-1 rounded-lg">£150</span>
                             </button>
@@ -576,7 +594,8 @@
                 </div>
 
                 <!-- Beat 6 -->
-                <div class="beat-card rounded-2xl overflow-hidden relative fade-in hidden" data-beat="beat6" data-sold="false">
+                <div class="beat-card rounded-2xl overflow-hidden relative fade-in hidden" data-beat="beat6" data-bpm="80" data-sold="false" tabindex="0">
+                    <div class="holo-sheen" aria-hidden="true"></div>
                     <div class="relative h-48 bg-gradient-to-br from-indigo-600 to-purple-600">
                         <div class="absolute inset-0 flex items-center justify-center">
                             <div class="waveform-visualizer flex items-end gap-1 h-16 paused" id="viz-beat6">
@@ -589,7 +608,7 @@
                                 <div class="waveform-bar w-1.5 rounded-full bg-white/80"></div>
                             </div>
                         </div>
-                        <button class="play-btn absolute bottom-4 right-4 w-12 h-12 rounded-full flex items-center justify-center text-white transition-all" onclick="togglePlay('beat6', '/preview/beat6')" title="Play Ocean Waves beat">
+                        <button class="play-btn absolute bottom-4 right-4 w-12 h-12 rounded-full flex items-center justify-center text-white transition-all" onclick="togglePlay('beat6', '/preview/beat6')" title="Play Ocean Waves beat" aria-pressed="false" aria-label="Play Ocean Waves beat">
                             <svg class="w-5 h-5 play-icon" fill="currentColor" viewBox="0 0 24 24">
                                 <path d="M8 5v14l11-7z"/>
                             </svg>
@@ -611,15 +630,15 @@
                             <span class="meta-tag px-2 py-1 rounded text-silver-300 text-xs">B Minor</span>
                             <span class="px-2 py-1 bg-indigo-600/20 rounded text-indigo-400 text-xs">Chillwave</span>
                         </div>
-                        <div class="progress-bar h-1.5 rounded-full mb-4 cursor-pointer" onclick="seek(event, 'beat6')">
-                            <div class="progress-fill h-full rounded-full transition-all duration-100" id="progress-beat6" style="width: 0%"></div>
+                        <div class="progress-bar h-1.5 rounded-full mb-4 cursor-pointer" onclick="seek(event, 'beat6')" role="button" tabindex="0" aria-label="Seek playback position for Ocean Waves">
+                            <div class="progress-fill h-full rounded-full transition-all duration-100" id="progress-beat6"></div>
                         </div>
                         <div class="space-y-2">
-                            <button onclick="openBuyModal('beat6', 'Ocean Waves', 75, false)" class="buy-btn w-full py-3 rounded-xl text-white font-semibold text-sm flex items-center justify-between px-4 transition-all">
+                            <button onclick="openBuyModal('beat6', 'Ocean Waves', 75, false)" class="buy-btn w-full py-3 rounded-xl text-white font-semibold text-sm flex items-center justify-between px-4 transition-all" aria-label="Buy Ocean Waves WAV only for £75">
                                 <span>Buy WAV Only</span>
                                 <span class="price-tag px-3 py-1 rounded-lg">£75</span>
                             </button>
-                            <button onclick="openBuyModal('beat6', 'Ocean Waves', 150, true)" class="buy-btn w-full py-3 rounded-xl text-white font-semibold text-sm flex items-center justify-between px-4 transition-all">
+                            <button onclick="openBuyModal('beat6', 'Ocean Waves', 150, true)" class="buy-btn w-full py-3 rounded-xl text-white font-semibold text-sm flex items-center justify-between px-4 transition-all" aria-label="Buy Ocean Waves WAV and stems for £150">
                                 <span>Buy WAV + Stems</span>
                                 <span class="price-tag stems px-3 py-1 rounded-lg">£150</span>
                             </button>
@@ -1037,5 +1056,6 @@
             });
         }, 100);
     </script>
+    <script src="assets/js/ui.js" defer></script>
 </body>
 </html>

@@ -16,6 +16,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
+    <!-- Global Styles -->
+    <link rel="stylesheet" href="styles/global.css">
     
     <script>
         tailwind.config = {
@@ -43,6 +45,7 @@
         .font-display { font-family: 'Space Grotesk', sans-serif; }
         .glass-panel {
             background: rgba(30, 41, 59, 0.4);
+            -webkit-backdrop-filter: blur(12px);
             backdrop-filter: blur(12px);
             border: 1px solid rgba(148, 163, 184, 0.1);
         }
@@ -132,39 +135,46 @@
 </head>
 <body class="antialiased overflow-x-hidden">
 
-    <!-- Navigation -->
-    <nav class="fixed w-full z-50 glass-panel border-b border-silver-500/10">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-20">
-                <a href="index.html" class="flex items-center space-x-3">
-                    <div class="w-10 h-10 rounded-full bg-gradient-to-br from-silver-300 to-silver-500 flex items-center justify-center text-midnight-900 font-bold text-xl">M</div>
-                    <span class="font-display font-bold text-2xl silver-gradient tracking-wider">MILLERS</span>
-                </a>
-                <div class="hidden md:flex space-x-8">
-                    <a href="index.html#home" class="text-silver-300 hover:text-white transition-colors text-sm uppercase tracking-wider">Home</a>
-                    <a href="index.html#services" class="text-silver-300 hover:text-white transition-colors text-sm uppercase tracking-wider">Services</a>
-                    <a href="work.html" class="text-green-400 hover:text-green-300 transition-colors text-sm uppercase tracking-wider font-semibold">Work & Credits</a>
-                    <a href="beatstore.html" class="text-silver-300 hover:text-white transition-colors text-sm uppercase tracking-wider">Beatstore</a>
-                    <a href="index.html#upload" class="text-silver-300 hover:text-white transition-colors text-sm uppercase tracking-wider">Upload Stems</a>
-                    <a href="index.html#contact" class="text-silver-300 hover:text-white transition-colors text-sm uppercase tracking-wider">Contact</a>
-                </div>
-                <!-- Mobile Menu Button -->
-                <button id="mobile-menu-btn" class="md:hidden text-white p-2">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-                    </svg>
-                </button>
+    <!-- Ambient Background Layers (Global) -->
+    <div class="ambient-bg" aria-hidden="true">
+        <canvas id="particle-canvas"></canvas>
+        <div class="gradient-mesh"></div>
+        <div class="depth-layer-1"></div>
+        <div class="depth-layer-2"></div>
+    </div>
+
+    <!-- Floating Navigation Island -->
+    <nav class="nav-island" role="navigation" aria-label="Main navigation">
+        <div class="nav-progress" aria-hidden="true"></div>
+        <div class="flex items-center gap-6">
+            <a href="index.html" class="flex items-center gap-3 flex-shrink-0" aria-label="MILLERS Home">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-silver-300 to-silver-500 flex items-center justify-center text-midnight-900 font-bold text-xl">M</div>
+                <span class="font-display font-bold text-xl silver-gradient tracking-wider hidden sm:block">MILLERS</span>
+            </a>
+            
+            <div class="nav-links flex items-center gap-1 hidden md:flex">
+                <a href="index.html#home" class="nav-link px-4 py-2 text-sm font-semibold text-silver-300 hover:text-white transition-colors rounded-full" data-magnetic>Home</a>
+                <a href="index.html#services" class="nav-link px-4 py-2 text-sm font-semibold text-silver-300 hover:text-white transition-colors rounded-full" data-magnetic>Services</a>
+                <a href="work.html" class="nav-link px-4 py-2 text-sm font-semibold text-green-400 hover:text-green-300 transition-colors rounded-full" data-magnetic>Work</a>
+                <a href="beatstore.html" class="nav-link px-4 py-2 text-sm font-semibold text-silver-300 hover:text-white transition-colors rounded-full" data-magnetic>Beatstore</a>
+                <a href="index.html#upload" class="nav-link px-4 py-2 text-sm font-semibold text-green-400 hover:text-green-300 transition-colors rounded-full" data-magnetic>Upload Stems</a>
+                <a href="index.html#contact" class="nav-link px-4 py-2 text-sm font-semibold text-silver-300 hover:text-white transition-colors rounded-full" data-magnetic>Contact</a>
             </div>
-            <!-- Mobile Menu -->
-            <div id="mobile-menu" class="hidden md:hidden absolute top-20 left-0 right-0 glass-panel border-b border-silver-500/10">
-                <div class="flex flex-col space-y-1 px-4 py-4">
-                    <a href="index.html#home" class="text-silver-300 hover:text-white text-sm uppercase tracking-wider py-2">Home</a>
-                    <a href="index.html#services" class="text-silver-300 hover:text-white text-sm uppercase tracking-wider py-2">Services</a>
-                    <a href="work.html" class="text-green-400 hover:text-green-300 text-sm uppercase tracking-wider font-semibold py-2">Work & Credits</a>
-                    <a href="beatstore.html" class="text-silver-300 hover:text-white text-sm uppercase tracking-wider py-2">Beatstore</a>
-                    <a href="index.html#upload" class="text-silver-300 hover:text-white text-sm uppercase tracking-wider py-2">Upload Stems</a>
-                    <a href="index.html#contact" class="text-silver-300 hover:text-white text-sm uppercase tracking-wider py-2">Contact</a>
-                </div>
+            
+            <button id="mobile-menu-btn" class="md:hidden text-white p-2" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobile-menu">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+            </button>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden absolute top-full left-4 right-4 mt-2 glass-panel rounded-2xl p-4 border-b border-silver-500/10" role="dialog" aria-label="Mobile menu">
+            <div class="flex flex-col space-y-1">
+                <a href="index.html#home" class="mobile-nav-link px-4 py-3 text-sm font-semibold text-silver-300 hover:text-white transition-colors rounded-xl">Home</a>
+                <a href="index.html#services" class="mobile-nav-link px-4 py-3 text-sm font-semibold text-silver-300 hover:text-white transition-colors rounded-xl">Services</a>
+                <a href="work.html" class="mobile-nav-link px-4 py-3 text-sm font-semibold text-green-400 hover:text-green-300 transition-colors rounded-xl">Work</a>
+                <a href="beatstore.html" class="mobile-nav-link px-4 py-3 text-sm font-semibold text-silver-300 hover:text-white transition-colors rounded-xl">Beatstore</a>
+                <a href="index.html#upload" class="mobile-nav-link px-4 py-3 text-sm font-semibold text-green-400 hover:text-green-300 transition-colors rounded-xl">Upload Stems</a>
+                <a href="index.html#contact" class="mobile-nav-link px-4 py-3 text-sm font-semibold text-silver-300 hover:text-white transition-colors rounded-xl">Contact</a>
             </div>
         </div>
     </nav>
@@ -516,6 +526,7 @@
                 el.classList.add('visible');
             });
         }, 100);
-    </script>
+</script>
+    <script src="assets/js/ui.js" defer></script>
 </body>
 </html>

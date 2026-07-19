@@ -8,6 +8,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
+    <!-- Global Styles -->
+    <link rel="stylesheet" href="styles/global.css">
     <script>
         tailwind.config = {
             theme: {
@@ -34,6 +36,7 @@
         .silver-gradient {
             background: linear-gradient(135deg, #e2e8f0 0%, #94a3b8 50%, #cbd5e1 100%);
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
         }
         .success-check {
@@ -54,6 +57,50 @@
     </style>
 </head>
 <body class="min-h-screen flex items-center justify-center p-4">
+
+    <!-- Ambient Background Layers (Global) -->
+    <div class="ambient-bg" aria-hidden="true">
+        <canvas id="particle-canvas"></canvas>
+        <div class="gradient-mesh"></div>
+        <div class="depth-layer-1"></div>
+        <div class="depth-layer-2"></div>
+    </div>
+    <!-- Floating Navigation Island -->
+    <nav class="nav-island" role="navigation" aria-label="Main navigation">
+        <div class="nav-progress" aria-hidden="true"></div>
+        <div class="flex items-center gap-6">
+            <a href="index.html" class="flex items-center gap-3 flex-shrink-0" aria-label="MILLERS Home">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-silver-300 to-silver-500 flex items-center justify-center text-midnight-900 font-bold text-xl">M</div>
+                <span class="font-display font-bold text-xl silver-gradient tracking-wider hidden sm:block">MILLERS</span>
+            </a>
+            
+            <div class="nav-links flex items-center gap-1 hidden md:flex">
+                <a href="index.html#home" class="nav-link px-4 py-2 text-sm font-semibold text-silver-300 hover:text-white transition-colors rounded-full" data-magnetic>Home</a>
+                <a href="index.html#services" class="nav-link px-4 py-2 text-sm font-semibold text-silver-300 hover:text-white transition-colors rounded-full" data-magnetic>Services</a>
+                <a href="work.html" class="nav-link px-4 py-2 text-sm font-semibold text-silver-300 hover:text-white transition-colors rounded-full" data-magnetic>Work</a>
+                <a href="beatstore.html" class="nav-link px-4 py-2 text-sm font-semibold text-purple-400 hover:text-purple-300 transition-colors rounded-full" data-magnetic>Beatstore</a>
+                <a href="index.html#upload" class="nav-link px-4 py-2 text-sm font-semibold text-green-400 hover:text-green-300 transition-colors rounded-full" data-magnetic>Upload Stems</a>
+                <a href="index.html#contact" class="nav-link px-4 py-2 text-sm font-semibold text-silver-300 hover:text-white transition-colors rounded-full" data-magnetic>Contact</a>
+            </div>
+            
+            <button id="mobile-menu-btn" class="md:hidden text-white p-2" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobile-menu">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+            </button>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden absolute top-full left-4 right-4 mt-2 glass-panel rounded-2xl p-4 border-b border-silver-500/10" role="dialog" aria-label="Mobile menu">
+            <div class="flex flex-col space-y-1">
+                <a href="index.html#home" class="mobile-nav-link px-4 py-3 text-sm font-semibold text-silver-300 hover:text-white transition-colors rounded-xl">Home</a>
+                <a href="index.html#services" class="mobile-nav-link px-4 py-3 text-sm font-semibold text-silver-300 hover:text-white transition-colors rounded-xl">Services</a>
+                <a href="work.html" class="mobile-nav-link px-4 py-3 text-sm font-semibold text-silver-300 hover:text-white transition-colors rounded-xl">Work</a>
+                <a href="beatstore.html" class="mobile-nav-link px-4 py-3 text-sm font-semibold text-purple-400 hover:text-purple-300 transition-colors rounded-xl">Beatstore</a>
+                <a href="index.html#upload" class="mobile-nav-link px-4 py-3 text-sm font-semibold text-green-400 hover:text-green-300 transition-colors rounded-xl">Upload Stems</a>
+                <a href="index.html#contact" class="mobile-nav-link px-4 py-3 text-sm font-semibold text-silver-300 hover:text-white transition-colors rounded-xl">Contact</a>
+            </div>
+        </div>
+    </nav>
+
     <div class="max-w-lg w-full text-center">
         <!-- Success Icon -->
         <div class="success-check w-24 h-24 rounded-full bg-green-500/20 flex items-center justify-center mx-auto mb-8 border-2 border-green-500">
@@ -63,20 +110,20 @@
         </div>
 
         <!-- Success Message -->
-        </h1> class="font-display text-4xl md:text-5xl font-bold silver-gradient mb-4 fade-in" style="animation-delay: 0.2s">
+        <h1 class="font-display text-4xl md:text-5xl font-bold silver-gradient mb-4 fade-in fade-in-delay-2">
             Purchase Complete!
         </h1>
 
-        </p> class="text-silver-400 text-lg mb-2 fade-in" style="animation-delay: 0.4s">
+        <p class="text-silver-400 text-lg mb-2 fade-in fade-in-delay-4">
             Thank you for your purchase.
         </p>
 
-        </p> class="text-silver-300 fade-in" style="animation-delay: 0.5s">
+        <p class="text-silver-300 fade-in fade-in-delay-5">
             Your exclusive beat and license have been sent to your email.
         </p>
 
         <!-- What's Next -->
-        </div> class="glass-panel bg-midnight-800/50 rounded-2xl p-6 mt-8 border border-silver-500/10 fade-in" style="animation-delay: 0.6s">
+        <div class="glass-panel bg-midnight-800/50 rounded-2xl p-6 mt-8 border border-silver-500/10 fade-in fade-in-delay-6">
             <h2 class="font-display text-xl font-bold text-white mb-4">What's Next?</h2>
             
             <div class="space-y-4 text-left">
@@ -107,7 +154,7 @@
         </div>
 
         <!-- License Info -->
-        </div> class="bg-amber-500/10 rounded-xl p-4 mt-6 border border-amber-500/20 fade-in" style="animation-delay: 0.7s">
+        <div class="bg-amber-500/10 rounded-xl p-4 mt-6 border border-amber-500/20 fade-in fade-in-delay-7">
             <div class="flex items-start gap-3">
                 <svg class="w-6 h-6 text-amber-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
@@ -120,7 +167,7 @@
         </div>
 
         <!-- Back to Store -->
-        </div> class="mt-8 fade-in" style="animation-delay: 0.8s">
+        <div class="mt-8 fade-in fade-in-delay-8">
             <a href="beatstore.html" class="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-full font-semibold hover:shadow-lg transition-all transform hover:scale-105">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
@@ -130,7 +177,7 @@
         </div>
 
         <!-- Support -->
-        </p> class="text-silver-500 text-sm mt-8 fade-in" style="animation-delay: 0.9s">
+        <p class="text-silver-500 text-sm mt-8 fade-in fade-in-delay-9">
             Didn't receive your email? Check your spam folder or <a href="mailto:contact@millersaudio.com" class="text-purple-400 hover:text-purple-300">contact us</a>.
         </p>
     </div>
@@ -147,5 +194,32 @@
             //     .then(data => console.log('Session verified:', data));
         }
     </script>
+    <script>
+        // Lightweight confetti burst for success page
+        function burstConfetti() {
+            const colors = ['#22c55e', '#8b5cf6', '#f59e0b', '#e2e8f0'];
+            const container = document.body;
+            for (let i = 0; i < 40; i++) {
+                const particle = document.createElement('div');
+                const size = Math.random() * 8 + 6;
+                particle.style.cssText = `position:fixed; left:50%; top:40%; width:${size}px; height:${size}px; background:${colors[Math.floor(Math.random()*colors.length)]}; border-radius:${Math.random()>0.5?'50%':'2px'}; pointer-events:none; transform:translate(-50%,-50%); z-index:9999;`;
+                container.appendChild(particle);
+                const angle = (Math.PI * 2 * i) / 40;
+                const velocity = Math.random() * 200 + 80;
+                const tx = Math.cos(angle) * velocity;
+                const ty = Math.sin(angle) * velocity - 80;
+                const rot = Math.random() * 720;
+                particle.animate([
+                    { transform: 'translate(-50%, -50%) scale(1)', opacity: 1 },
+                    { transform: `translate(calc(-50% + ${tx}px), calc(-50% + ${ty}px)) rotate(${rot}deg) scale(0.5)`, opacity: 0 }
+                ], { duration: 900 + Math.random() * 600, easing: 'cubic-bezier(0.16, 1, 0.3, 1)', fill: 'forwards' }).onfinish = () => particle.remove();
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            burstConfetti();
+        });
+    </script>
+    <script src="assets/js/ui.js" defer></script>
 </body>
 </html>
